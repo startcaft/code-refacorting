@@ -1,4 +1,0 @@
-绝大多数情况下，函数应该放在它所使用的数据的所属对象内。
-
-观察Customer_Recactoring01#中的amoutFor和FrequentRenterPoints方法，它使用的数据是属于Rental类的，
-所以有必将它们放置到Rental类中。
