@@ -45,10 +45,7 @@ public class Customer {
 		
 		while (rentalElements.hasMoreElements()) {
 			
-			//计算租金
-			double currentAmount = 0;
 			Rental each = (Rental) rentalElements.nextElement();
-			currentAmount = this.amountFor(each);
 			
 			//计算客户积分
 			frequentRenterPoints += 1;
@@ -58,9 +55,9 @@ public class Customer {
 			}
 			
 			result += "\t<<" + each.getMovie().getTitle() + ">>\t"
-					+ String.valueOf(currentAmount) + "\n";
+					+ String.valueOf(each.getCharge()) + "\n";
 			
-			totalAmount += currentAmount;
+			totalAmount += each.getCharge();
 		}
 		
 		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
@@ -68,34 +65,5 @@ public class Customer {
 				+ " frequent renter points";
 		
 		return result;
-	}
-	
-	/**
-	 * 计算一次租赁的租金情况
-	 */
-	private double amountFor(Rental aRental){
-		{
-			double result = 0;
-			{
-				switch (aRental.getMovie().getPriceCode()) {
-					case Movie.REGULAR:
-						result += 2;
-						if(aRental.getDaysRented() > 2){
-							result += (aRental.getDaysRented() - 2) * 1.5;
-						}
-						break;
-					case Movie.NEW_RELEASE:
-						result += aRental.getDaysRented() * 3;
-						break;
-					case Movie.CHILDRENS:
-						result += 1.5;
-						if(aRental.getDaysRented() > 3){
-							result += (aRental.getDaysRented() - 3) * 1.5;
-						}
-						break;
-				}
-			}
-			return result;
-		}
 	}
 }

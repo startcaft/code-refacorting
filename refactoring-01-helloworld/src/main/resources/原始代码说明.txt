@@ -1,3 +1,4 @@
-Customer类中的statement()方法，过长；
-将计算一次租赁的费用的代码，抽象成一个私有方法private double amountFor(Rental aRental)；
-代码瞬间清爽了许多；
+在看看Customer类中的private double amountFor(Rental aRental)方法；
+它存户跟Customer类完全没关系；
+
+***函数应该放在它所使用的数据的所属对象内；
