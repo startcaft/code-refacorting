@@ -58,4 +58,17 @@ public class Rental {
 			return result;
 		}
 	}
+	
+	/**
+	 * 计算租赁影片获得的积分，新上映的影片并且租赁天数大于1天的积2分，其余积1分
+	 */
+	int getFrequentRenterPoints(){
+		{
+			if((this.getMovie().getPriceCode() == Movie.NEW_RELEASE)
+					&& this.getDaysRented() > 1 )
+				return 2;
+			else
+				return 1;
+		}
+	}
 }

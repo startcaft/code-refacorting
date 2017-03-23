@@ -1,4 +1,5 @@
-在看看Customer类中的private double amountFor(Rental aRental)方法；
-它存户跟Customer类完全没关系；
+按照函数应该放在它所使用的数据的所属对象内的原则；
+把Customer类中的计算积分的方法提炼并归置到Rental类中；
 
-***函数应该放在它所使用的数据的所属对象内；
+并未了消灭Customer类中的statement()方法中过多的局部变量，
+又将"获取总费用"和"获取总积分"分别封装成两个单独的方法；

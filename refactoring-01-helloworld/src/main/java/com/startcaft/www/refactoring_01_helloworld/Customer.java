@@ -33,37 +33,55 @@ public class Customer {
 	
 	/**
 	 * 模拟打印详单的函数
-	 * @return
 	 */
 	public String statement(){
-		
-		double totalAmount = 0;
-		int frequentRenterPoints = 0;
-		
-		Enumeration<Rental> rentalElements = rentals.elements();
-		String result = "Rental Record for [" + getName() + "]\n";
-		
-		while (rentalElements.hasMoreElements()) {
+		{
+			Enumeration<Rental> rentalElements = rentals.elements();
+			String result = "Rental Record for [" + getName() + "]\n";
 			
-			Rental each = (Rental) rentalElements.nextElement();
-			
-			//计算客户积分
-			frequentRenterPoints += 1;
-			if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
-					each.getDaysRented() > 1) {
-				frequentRenterPoints++;
+			while (rentalElements.hasMoreElements()) {
+				Rental each = (Rental) rentalElements.nextElement();
+				result += "\t<<" + each.getMovie().getTitle() + ">>\t"
+						+ String.valueOf(each.getCharge()) + "\n";
 			}
 			
-			result += "\t<<" + each.getMovie().getTitle() + ">>\t"
-					+ String.valueOf(each.getCharge()) + "\n";
-			
-			totalAmount += each.getCharge();
+			//获取总费用和总积分
+			result += "Amount owed is " + String.valueOf(this.getTotalCharge()) + "\n";
+			result += "You earned " + String.valueOf(this.getTotalFrequentRenterPoints())
+					+ " frequent renter points";
+			return result;
 		}
-		
-		result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-		result += "You earned " + String.valueOf(frequentRenterPoints)
-				+ " frequent renter points";
-		
-		return result;
+	}
+	
+	/**
+	 * 迭代Enumeration<Rental>集合，获取总的租赁费用
+	 */
+	private double getTotalCharge(){
+		{
+			double result = 0;
+			Enumeration<Rental> rentalList = rentals.elements();
+			while (rentalList.hasMoreElements()) {
+				Rental rental = (Rental) rentalList.nextElement();
+				result += rental.getCharge();
+			}
+			
+			return result;
+		}
+	}
+	
+	/**
+	 * 迭代Enumeration<Rental>集合，获取总的积分
+	 */
+	private int getTotalFrequentRenterPoints(){
+		{
+			int result = 0;
+			Enumeration<Rental> rentalList = rentals.elements();
+			while (rentalList.hasMoreElements()) {
+				Rental rental = (Rental) rentalList.nextElement();
+				result += rental.getFrequentRenterPoints();
+			}
+			
+			return result;
+		}
 	}
 }
