@@ -54,6 +54,30 @@ public class Customer {
 	}
 	
 	/**
+	 * 模拟打印HTML详单
+	 */
+	public String htmlStatement(){
+		{
+			Enumeration<Rental> list = rentals.elements();
+			String result = "<H1>Rentals of for <EM>"+getName()+"</EM></H1>";
+			while (list.hasMoreElements()) {
+				Rental each = (Rental) list.nextElement();
+				
+				result += each.getMovie().getTitle() + ":" +
+						String.valueOf(each.getCharge()) + "<br>";
+			}
+			
+			result += "<p>You own <EM>"+String.valueOf(this.getTotalCharge())+
+					"</EM></p>";
+			result += "<p>On this rental you enraned <EM>" +
+						String.valueOf(this.getTotalFrequentRenterPoints()) +
+						"</EM> frequent renter points<p>";
+			
+			return result;
+		}
+	}
+	
+	/**
 	 * 迭代Enumeration<Rental>集合，获取总的租赁费用
 	 */
 	private double getTotalCharge(){
