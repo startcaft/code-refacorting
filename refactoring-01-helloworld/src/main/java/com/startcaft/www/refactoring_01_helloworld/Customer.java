@@ -48,26 +48,9 @@ public class Customer {
 			//计算租金
 			double currentAmount = 0;
 			Rental each = (Rental) rentalElements.nextElement();
+			currentAmount = this.amountFor(each);
 			
-			switch (each.getMovie().getPriceCode()) {
-			case Movie.REGULAR:
-				currentAmount += 2;
-				if(each.getDaysRented() > 2){
-					currentAmount += (each.getDaysRented() - 2) * 1.5;
-				}
-				break;
-			case Movie.NEW_RELEASE:
-				currentAmount += each.getDaysRented() * 3;
-				break;
-			case Movie.CHILDRENS:
-				currentAmount += 1.5;
-				if(each.getDaysRented() > 3){
-					currentAmount += (each.getDaysRented() - 3) * 1.5;
-				}
-				break;
-			}
-			
-			//计算客户积分，新片有额外的加成。
+			//计算客户积分
 			frequentRenterPoints += 1;
 			if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE &&
 					each.getDaysRented() > 1) {
@@ -85,5 +68,34 @@ public class Customer {
 				+ " frequent renter points";
 		
 		return result;
+	}
+	
+	/**
+	 * 计算一次租赁的租金情况
+	 */
+	private double amountFor(Rental aRental){
+		{
+			double result = 0;
+			{
+				switch (aRental.getMovie().getPriceCode()) {
+					case Movie.REGULAR:
+						result += 2;
+						if(aRental.getDaysRented() > 2){
+							result += (aRental.getDaysRented() - 2) * 1.5;
+						}
+						break;
+					case Movie.NEW_RELEASE:
+						result += aRental.getDaysRented() * 3;
+						break;
+					case Movie.CHILDRENS:
+						result += 1.5;
+						if(aRental.getDaysRented() > 3){
+							result += (aRental.getDaysRented() - 3) * 1.5;
+						}
+						break;
+				}
+			}
+			return result;
+		}
 	}
 }
