@@ -1,5 +1,10 @@
 package com.startcaft.www.refactoring_01_helloworld;
 
+import com.refacotring.prices.ChildrensPrice;
+import com.refacotring.prices.NewReleasePrice;
+import com.refacotring.prices.Price;
+import com.refacotring.prices.RegularPrice;
+
 /**
  * 影片;
  * 包含三个静态变量来标识影片类型;
@@ -11,7 +16,7 @@ public class Movie {
 	public static final int NEW_RELEASE = 1;//新片
 	
 	private String title;
-	private int priceCode;
+	private Price _price;
 	
 	public String getTitle() {
 		return title;
@@ -19,17 +24,36 @@ public class Movie {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	/**
+	 * 获取Price的价格代号
+	 */
 	public int getPriceCode() {
-		return priceCode;
+		return _price.getPriceCode();
 	}
-	public void setPriceCode(int priceCode) {
-		this.priceCode = priceCode;
+	/**
+	 * 根据价格代码设置具体的Price实现类
+	 */
+	public void setPriceCode(int arg) {
+		switch (arg) {
+			case REGULAR:
+				_price = new RegularPrice();
+				break;
+			case CHILDRENS:
+				_price = new ChildrensPrice();
+				break;
+			case NEW_RELEASE:
+				_price = new NewReleasePrice();
+				break;
+			default:
+				throw new IllegalArgumentException("Incorretc Price Code");
+		}
 	}
 	
 	public Movie(String title, int priceCode) {
 		super();
 		this.title = title;
-		this.priceCode = priceCode;
+		setPriceCode(priceCode);
 	}
 	
 	
@@ -40,29 +64,7 @@ public class Movie {
 	 * @param daysRented 租期，该属性来自于Rental类
 	 */
 	double getCharge(int daysRented){
-		{
-			double result = 0;
-			{
-				switch (this.getPriceCode()) {
-					case Movie.REGULAR:
-						result += 2;
-						if(daysRented > 2){
-							result += (daysRented - 2) * 1.5;
-						}
-						break;
-					case Movie.NEW_RELEASE:
-						result += daysRented * 3;
-						break;
-					case Movie.CHILDRENS:
-						result += 1.5;
-						if(daysRented > 3){
-							result += (daysRented - 3) * 1.5;
-						}
-						break;
-				}
-			}
-			return result;
-		}
+		return _price.getCharge(daysRented);
 	}
 	
 	/**

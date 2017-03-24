@@ -1,10 +1,12 @@
-***最好不要在另一个对象的属性基础上运用switch语句***
-1，在Rental类中的getCharge()方法中的switch语句中，
-		最好不要在另一个对象的属性基础上运用switch语句，
-		如果不得不使用，也应该在对象自己的数据上使用，而不是在别人的数据上使用。
-		
-		【这也就意味着Rental类中的getCharge()应该归置到Movie类中】
-		
-		归置完getCharge()之后，以相同的手法处理积分计算。
-		这样我们就把根据应影片类型而变化的所有东西，都放到了影片类型所属的类中了。
+***运用多态来替代switch逻辑***
 
+这里采用State模式:
+1，抽取Price类，定义抽象方法int getPriceCode();返回价格代码
+2，定义抽象方法double getCharge(int daysRental);根据租期计算租金
+3，定义方法int getFrequentRenterPoints(int daysRented);根据租期计算积分，默认返回1
+
+4，创建Price的子类，复写父类方法。
+5，Movie影片类中包含一个Price引用。
+
+查看代码发现，为了引入State模式，花了不少力气，这样值得吗？
+这么做的收获是：如果要修改任何与价格有关的行为，或者是添加新的定价标准，或是加入其它取决于价格的行为，程序的修改会容易的多。
