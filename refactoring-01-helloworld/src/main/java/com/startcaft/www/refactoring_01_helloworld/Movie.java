@@ -32,4 +32,50 @@ public class Movie {
 		this.priceCode = priceCode;
 	}
 	
+	
+	/////////////////////////////////////////////
+	
+	/**
+	 * 根据租期来计算费用。
+	 * @param daysRented 租期，该属性来自于Rental类
+	 */
+	double getCharge(int daysRented){
+		{
+			double result = 0;
+			{
+				switch (this.getPriceCode()) {
+					case Movie.REGULAR:
+						result += 2;
+						if(daysRented > 2){
+							result += (daysRented - 2) * 1.5;
+						}
+						break;
+					case Movie.NEW_RELEASE:
+						result += daysRented * 3;
+						break;
+					case Movie.CHILDRENS:
+						result += 1.5;
+						if(daysRented > 3){
+							result += (daysRented - 3) * 1.5;
+						}
+						break;
+				}
+			}
+			return result;
+		}
+	}
+	
+	/**
+	 * 新上映的影片并且租赁天数大于1天的积2分，其余积1分。
+	 * @param daysRented 租期，该属性来自于Rental类
+	 */
+	int getFrequentRenterPoints(int daysRented){
+		{
+			if((this.getPriceCode() == Movie.NEW_RELEASE)
+					&& daysRented > 1 )
+				return 2;
+			else
+				return 1;
+		}
+	}
 }
