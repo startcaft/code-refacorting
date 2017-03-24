@@ -9,6 +9,7 @@
 
 	<modules>
 		<module>../refactoring-01-helloworld</module>
+		<module>../oodp-01-simplefactory</module>
 	</modules>
 
 	<name>refactoring-parent</name>
