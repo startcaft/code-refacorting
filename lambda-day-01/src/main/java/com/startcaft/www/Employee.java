@@ -33,6 +33,8 @@ public class Employee {
         this.salary = salary;
     }
 
+    public  Employee(){}
+
     public Employee(String name) {
         this.name = name;
     }
