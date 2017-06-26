@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<!-- 开启全局性缓存 -->
+		<setting name="cacheEnabled" value="true"/>
+		<!--指定代理工厂,cglib-->
+		<setting name="proxyFactory" value="JAVASSIST"/>  
+		<!-- 打开延迟加载的开关 -->  
+        <setting name="lazyLoadingEnabled" value="true" />  
+        <!-- 将积极加载改为消息加载即按需加载 -->  
+        <setting name="aggressiveLazyLoading" value="false"/>
+		<!--Oracle中对null值的处理
+		<setting name="jdbcTypeForNull" value="null"/>
+		-->
+	</settings>
+	
+	<!-- 别名配置 -->
+	<typeAliases>
+		<package name="com.basic.core.entity"/>
+	</typeAliases>
+
+	<!--自定义类型转换器-->
+	<typeHandlers>
+		<typeHandler handler="com.basic.core.entity.enums.UserStatesEnumHandler" javaType="com.basic.core.entity.enums.UserStates"/>
+		<typeHandler handler="com.basic.core.entity.enums.GenderEnumHanlder" javaType="com.basic.core.entity.enums.Gender"/>
+	</typeHandlers>
+
+	<!--插件配置-->
+	<plugins>
+		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+	</plugins>
+
+</configuration>
