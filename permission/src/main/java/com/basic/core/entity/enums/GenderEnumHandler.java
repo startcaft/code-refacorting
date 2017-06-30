@@ -10,7 +10,7 @@ import java.sql.SQLException;
 /**
  * Created by startcaft on 2017/6/23.
  */
-public class GenderEnumHanlder implements TypeHandler<Gender> {
+public class GenderEnumHandler implements TypeHandler<Gender> {
 
     //如何保存到数据库中
     @Override

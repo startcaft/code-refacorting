@@ -26,8 +26,9 @@
 
 	<!--自定义类型转换器-->
 	<typeHandlers>
-		<typeHandler handler="com.basic.core.entity.enums.UserStatesEnumHandler" javaType="com.basic.core.entity.enums.UserStates"/>
-		<typeHandler handler="com.basic.core.entity.enums.GenderEnumHanlder" javaType="com.basic.core.entity.enums.Gender"/>
+		<typeHandler handler="com.basic.core.entity.enums.StatesEnumHandler" javaType="com.basic.core.entity.enums.States"/>
+		<typeHandler handler="com.basic.core.entity.enums.GenderEnumHandler" javaType="com.basic.core.entity.enums.Gender"/>
+		<typeHandler handler="com.basic.core.entity.enums.ResourceType" javaType="com.basic.core.entity.enums.ResourceTypeEnumHandler"/>
 	</typeHandlers>
 
 	<!--插件配置-->

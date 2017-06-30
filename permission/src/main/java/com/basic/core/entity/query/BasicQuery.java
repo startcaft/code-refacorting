@@ -1,5 +1,6 @@
 package com.basic.core.entity.query;
 
+import javax.ws.rs.QueryParam;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +10,13 @@ import java.util.Map;
  */
 public abstract class BasicQuery {
 
+	@QueryParam("page")
     private int page = 1;									// 当前页
+	@QueryParam("size")
 	private int rows = 20;									// 每页显示记录数
+	@QueryParam("sort")
 	private String sort;									// 排序字段
+	@QueryParam("order")
 	private String order = "desc";							// asc/desc
 	
 	public int getPage() {

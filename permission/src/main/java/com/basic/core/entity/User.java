@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.basic.core.entity.enums.Gender;
-import com.basic.core.entity.enums.UserStates;
+import com.basic.core.entity.enums.States;
 
 public class User extends BasicEntity {
 	
@@ -15,7 +15,7 @@ public class User extends BasicEntity {
     private String name;
     private String password;
     private Gender gender;
-    private UserStates states;
+    private States states;
     private Long organizationId;
     
     private Organization organization; 								// 所属组织
@@ -69,11 +69,11 @@ public class User extends BasicEntity {
         this.gender = gender;
     }
 
-    public UserStates getStates() {
+    public States getStates() {
         return states;
     }
 
-    public void setStates(UserStates states) {
+    public void setStates(States states) {
         this.states = states;
     }
 

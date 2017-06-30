@@ -1,27 +1,28 @@
-package com.basic.core.entity;
-
+package com.basic.core.entity.vo;
 
 import com.basic.core.entity.enums.ResourceType;
 import com.basic.core.entity.enums.States;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class Resource extends BasicEntity {
-	
+/**
+ * Created by startcaft on 2017/6/30.
+ */
+public class ResourceVo {
+
     private Date createDatetime;
     private String description;
     private String icon;
     private String name;
-    private ResourceType resourceType;
+    private Integer resTypeCode;
+    private String resTypeMsg;
     private Integer seq;
-    private States states;
+    private Integer statesCode;
+    private String statesMsg;
     private String url;
     private Long pid;
-    
-    private Resource resource; 										// 父节点
-	private List<Resource> resources = new ArrayList<Resource>();			// 子菜单
+
+    private String pname;       //父资源节点名称
 
     public Date getCreateDatetime() {
         return createDatetime;
@@ -36,7 +37,7 @@ public class Resource extends BasicEntity {
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
     public String getIcon() {
@@ -44,7 +45,7 @@ public class Resource extends BasicEntity {
     }
 
     public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
+        this.icon = icon;
     }
 
     public String getName() {
@@ -52,15 +53,23 @@ public class Resource extends BasicEntity {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
-    public ResourceType getResourceType() {
-        return resourceType;
+    public Integer getResTypeCode() {
+        return resTypeCode;
     }
 
-    public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
+    public void setResTypeCode(Integer resTypeCode) {
+        this.resTypeCode = resTypeCode;
+    }
+
+    public String getResTypeMsg() {
+        return resTypeMsg;
+    }
+
+    public void setResTypeMsg(String resTypeMsg) {
+        this.resTypeMsg = resTypeMsg;
     }
 
     public Integer getSeq() {
@@ -71,12 +80,20 @@ public class Resource extends BasicEntity {
         this.seq = seq;
     }
 
-    public States getStates() {
-        return states;
+    public Integer getStatesCode() {
+        return statesCode;
     }
 
-    public void setStates(States states) {
-        this.states = states;
+    public void setStatesCode(Integer statesCode) {
+        this.statesCode = statesCode;
+    }
+
+    public String getStatesMsg() {
+        return statesMsg;
+    }
+
+    public void setStatesMsg(String statesMsg) {
+        this.statesMsg = statesMsg;
     }
 
     public String getUrl() {
@@ -84,7 +101,7 @@ public class Resource extends BasicEntity {
     }
 
     public void setUrl(String url) {
-        this.url = url == null ? null : url.trim();
+        this.url = url;
     }
 
     public Long getPid() {
@@ -95,19 +112,11 @@ public class Resource extends BasicEntity {
         this.pid = pid;
     }
 
-	public Resource getResource() {
-		return resource;
-	}
+    public String getPname() {
+        return pname;
+    }
 
-	public void setResource(Resource resource) {
-		this.resource = resource;
-	}
-
-	public List<Resource> getResources() {
-		return resources;
-	}
-
-	public void setResources(List<Resource> resources) {
-		this.resources = resources;
-	}
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
 }

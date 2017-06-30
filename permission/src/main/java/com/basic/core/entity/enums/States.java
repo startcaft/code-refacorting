@@ -1,12 +1,12 @@
 package com.basic.core.entity.enums;
 
 /**
- * 用户状态枚举
+ * 数据条目状态枚举类
  */
-public enum UserStates {
+public enum States {
 
     NORMAL(100,"正常"),
-    LOCKED(200,"锁定");
+    LOCKED(200,"锁定或停用");
 
     private String msg;
     private Integer code;
@@ -27,12 +27,12 @@ public enum UserStates {
         this.code = code;
     }
 
-    private UserStates(Integer code, String msg){
+    private States(Integer code, String msg){
         this.code = code;
         this.msg = msg;
     }
 
-    public static UserStates getStates(Integer code){
+    public static States getStates(Integer code){
         switch(code){
             case 100:
                 return NORMAL;

@@ -1,5 +1,6 @@
 package com.basic.core.config.jersey;
 
+import com.basic.core.exception.RestExceptionMapper;
 import com.basic.core.rest.UserResource;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -24,7 +25,9 @@ public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
         register(JacksonFeature.class);
-        register(UserResource.class);
+        register(RestExceptionMapper.class);
+        //register(UserResource.class);
+        packages("com.basic.core.rest");
     }
 
 //    @Bean

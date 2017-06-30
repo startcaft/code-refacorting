@@ -14,7 +14,6 @@ public class UserVo extends BasicVo {
     private Date createDatetime;
     private String loginName;
     private String name;
-    private String password;
     private Integer sex;                            //性别
     private String gender;
     private Integer statesCode;
@@ -55,14 +54,6 @@ public class UserVo extends BasicVo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Integer getSex() {

@@ -1,22 +1,20 @@
 package com.basic.core.rest;
 
-import com.basic.core.controller.UserController;
+import com.basic.core.entity.query.UserQuery;
 import com.basic.core.entity.vo.UserVo;
+import com.basic.core.exception.WebApplicationExceptionFactory;
 import com.basic.core.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.PathSegment;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by startcaft on 2017/6/26.
@@ -42,7 +40,43 @@ public class UserResource {
             if (LOGGER.isErrorEnabled()){
                 LOGGER.error(e.getMessage(),e);
             }
+            throw WebApplicationExceptionFactory.builderException(e);
         }
-        return null;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/query/{condition}")
+    public String pageQuery(@PathParam("condition") final PathSegment userQueryCondition) {
+
+//        UserQuery query = new UserQuery();
+        StringBuilder sb = new StringBuilder();
+        MultivaluedMap<String, String> parameters = userQueryCondition.getMatrixParameters();
+        Iterator<Map.Entry<String,List<String>>> iterator = parameters.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<String,List<String>> entry = iterator.next();
+            sb.append(entry.getKey()).append("=");
+            sb.append(entry.getValue().get(0)).append(" ");
+        }
+        return sb.toString();
+
+//        try {
+//            List<UserVo> userVoList = userService.searchUserPage(query);
+//            return userVoList;
+//        }
+//        catch (Exception e){
+//            if (LOGGER.isErrorEnabled()){
+//                LOGGER.error(e.getMessage(),e);
+//            }
+//        }
+//
+//        return null;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/query")
+    public UserQuery pageQuery1(@BeanParam UserQuery query) {
+        return query;
     }
 }
