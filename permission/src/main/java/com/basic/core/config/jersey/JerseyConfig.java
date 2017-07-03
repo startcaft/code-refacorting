@@ -1,7 +1,6 @@
 package com.basic.core.config.jersey;
 
-import com.basic.core.exception.RestExceptionMapper;
-import com.basic.core.rest.UserResource;
+import com.basic.core.exception.DbServerExceptionMapper;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.servlet.ServletContainer;
@@ -10,7 +9,6 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
 import javax.ws.rs.ApplicationPath;
 
 /**
@@ -25,7 +23,7 @@ public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
         register(JacksonFeature.class);
-        register(RestExceptionMapper.class);
+        register(DbServerExceptionMapper.class);
         //register(UserResource.class);
         packages("com.basic.core.rest");
     }

@@ -8,8 +8,6 @@ import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
-import org.springframework.web.servlet.view.JstlView;
 import javax.servlet.MultipartConfigElement;
 
 /**
@@ -23,18 +21,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Value("${file.upload.MulSize}")
     private String mulSize;
-
-    /*jsp配置视图解析器*/
-    @Bean
-    public InternalResourceViewResolver viewResolver() {
-        {
-            InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-            viewResolver.setPrefix("/WEB-INF/views/");
-            viewResolver.setSuffix(".jsp");
-            viewResolver.setViewClass(JstlView.class);
-            return viewResolver;
-        }
-    }
 
     /*文件上传配置*/
     @Bean
