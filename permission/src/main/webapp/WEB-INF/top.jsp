@@ -12,10 +12,9 @@
         <li class="light-blue">
             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                 <span class="user-info">
-									<small>欢迎你,</small>
-									张三
-								</span>
-
+                    <small>welcome,</small>
+                    张三
+                </span>
                 <i class="ace-icon fa fa-caret-down"></i>
             </a>
 

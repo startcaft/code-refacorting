@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/admin")
 public class LoginController {
 
-    @RequestMapping(value="/main",method = RequestMethod.GET)
-    public String main(){
-        return "main";
-    }
+//    @RequestMapping(value={"/","main","index"},method = RequestMethod.GET)
+//    public String main(){
+//        return "main";
+//    }
 }

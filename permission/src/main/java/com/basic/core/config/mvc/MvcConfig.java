@@ -38,11 +38,10 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/statics/**").addResourceLocations("/statics/");
     }
 
-
-
-
     /*配置快捷的ViewController，只是页面跳转的Controller*/
     public void addViewControllers(ViewControllerRegistry registry) {
+        //后台管理首页跳转配置
+        registry.addViewController("/admin/index").setViewName("main");
     }
 
     /*接受路径参数中的. ，/a/b/c.d*/
