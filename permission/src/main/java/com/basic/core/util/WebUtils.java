@@ -4,6 +4,7 @@ import com.basic.core.entity.vo.UserVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 /**
  * Created by startcaft on 2017/7/3.
@@ -17,14 +18,10 @@ public class WebUtils {
      * @param httpSession
      * @return
      */
-    public static UserVo getCurrentLoginUser(HttpSession httpSession){
+    public static Optional<UserVo> getCurrentLoginUser(HttpSession httpSession){
         UserVo sysUser=(UserVo)httpSession.getAttribute(USER_KEY_IN_SESSION);
-        return sysUser;
-    }
-
-    public static UserVo getCurrentLoginUser(HttpServletRequest request){
-        UserVo sysUser=getCurrentLoginUser(request.getSession());
-        return sysUser;
+        Optional<UserVo> optional = Optional.ofNullable(sysUser);//这里sysUser可能为空
+        return optional;
     }
 
     /**

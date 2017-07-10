@@ -2,21 +2,22 @@ package com.basic.core.service.impl;
 
 import com.basic.core.dao.master.UserDao;
 import com.basic.core.entity.User;
+import com.basic.core.entity.enums.States;
 import com.basic.core.entity.query.Condition;
 import com.basic.core.entity.query.UserQuery;
+import com.basic.core.entity.vo.UserPwdVo;
 import com.basic.core.entity.vo.UserVo;
 import com.basic.core.service.UserService;
 import com.github.pagehelper.PageHelper;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
     public List<UserVo> searchUserPage(UserQuery query) throws Exception {
         {
@@ -100,8 +102,17 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public UserVo userLogin(UserVo user) throws Exception {
-        return null;
+    public UserPwdVo userLogin(String loginName, String password) throws AuthenticationException {
+        User user = userDao.selectByNameAndPwd(loginName, password);
+        if (user == null){
+            throw new AuthenticationException();//用户不存在，或密码错误
+        }
+        if (user.getStates() == States.LOCKED){
+            throw new LockedAccountException();//用户被锁定，无法使用
+        }
+        UserPwdVo vo = new UserPwdVo();
+        BeanUtils.copyProperties(user,vo);
+        return vo;
     }
 
     @Transactional(value="masterTransactionManager",readOnly = true)
@@ -118,7 +129,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public Long searchUserByLoginName(String loginName) throws Exception {
-        return null;
+    public Optional<UserVo> searchUserByLoginName(String loginName) throws Exception {
+        {
+            UserVo vo = null;
+            User user = userDao.selectByLoginName(loginName);
+            if (user != null){
+                vo = new UserVo();
+                BeanUtils.copyProperties(user,vo);
+            }
+
+            return Optional.ofNullable(vo);
+        }
     }
 }

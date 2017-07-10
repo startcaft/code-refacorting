@@ -20,8 +20,8 @@ public interface UserDao {
     //根据登录名和密码查询，登录名具有唯一性
     User selectByNameAndPwd(@Param("loginName") String loginName, @Param("loginPwd") String loginPwd);
 
-    //根据登录名获取个数
-    Long selectCountByLoginName(String loginName);
+    //根据登录名查询
+    User selectByLoginName(String loginName);
 
     //分页查询，两个必须的参数pageNo和pageSize
     List<User> selectUserPage(Map<String, Object> map);

@@ -35,7 +35,6 @@
     </resultMap>
 
 
-
     <!-- 注意，这里返回了主键ID到User的id属性 -->
     <insert id="insert" parameterType="com.basic.core.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user (age, create_datetime,
@@ -91,8 +90,10 @@
         u.login_name = #{loginName} and u.password = #{loginPwd}
     </select>
     
-    <select id="selectCountByLoginName" resultType="Integer">
-        SELECT COUNT(id) FROM sys_user WHERE login_name = #{_parameter}
+    <select id="selectByLoginName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_user WHERE login_name = #{_parameter}
     </select>
 
     <select id="selectUsersByRole" parameterType="java.lang.Long" resultMap="BaseResultMap">

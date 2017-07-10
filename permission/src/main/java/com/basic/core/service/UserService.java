@@ -2,8 +2,12 @@ package com.basic.core.service;
 
 import com.basic.core.entity.User;
 import com.basic.core.entity.query.UserQuery;
+import com.basic.core.entity.vo.UserPwdVo;
 import com.basic.core.entity.vo.UserVo;
+import org.apache.shiro.authc.AuthenticationException;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -26,7 +30,7 @@ public interface UserService {
 	UserVo searchSingleUser(Long id) throws Exception;
 
 	/**用户登录，客户端传递的密码需要使用Shiro提供的MD5工具进行加密再到数据库中查询(把用户名当作slat)**/
-	UserVo userLogin(UserVo user) throws Exception;
+	UserPwdVo userLogin(String loginName, String password) throws AuthenticationException;
 	
 	/**根据用户id获取对应的所有资源列表**/
 	List<String> resourceList(Long id) throws Exception;
@@ -35,5 +39,5 @@ public interface UserService {
 	void editUserPwd(Long id, String oldPwd, String pwd) throws Exception;
 	
 	/**根据名字查询用户**/
-	Long searchUserByLoginName(String loginName) throws Exception;
+	Optional<UserVo> searchUserByLoginName(String loginName) throws Exception;
 }
