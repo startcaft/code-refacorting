@@ -86,6 +86,7 @@
     <select id="selectByNameAndPwd" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
+        from sys_user u
         where
         u.login_name = #{loginName} and u.password = #{loginPwd}
     </select>

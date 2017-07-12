@@ -155,10 +155,10 @@
                 $btn.addClass("disabled");
                 $.post('${context}/admin/login', submitData, function(result) {
                     $btn.removeClass("disabled");
-                    if (result.code == 0) {
-                        window.top.location.href = "${context}/admin/index";
+                    if (result.success) {
+                        window.top.location.href = "${context}/admin/main";
                     } else {
-                        alert(data.msg);
+                        alert(result.tipInfo);
                     }
                 }, "json");
                 return false;

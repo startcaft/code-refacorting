@@ -11,6 +11,7 @@ import com.basic.core.service.UserService;
 import com.github.pagehelper.PageHelper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,7 +104,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
     public UserPwdVo userLogin(String loginName, String password) throws AuthenticationException {
-        User user = userDao.selectByNameAndPwd(loginName, password);
+        User user = userDao.selectByNameAndPwd(loginName, new Md5Hash(password).toString());
         if (user == null){
             throw new AuthenticationException();//用户不存在，或密码错误
         }

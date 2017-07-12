@@ -1,6 +1,7 @@
 package com.basic.core.controller;
 
 import com.basic.core.entity.vo.MsgJson;
+import com.basic.core.entity.vo.UserPwdVo;
 import com.basic.core.entity.vo.UserVo;
 import com.basic.core.util.WebUtils;
 import org.apache.shiro.SecurityUtils;
@@ -17,7 +18,7 @@ import java.util.Optional;
 @RequestMapping("/admin")
 public class LoginController {
 
-    @RequestMapping(value="/index",method = RequestMethod.GET)
+    @RequestMapping(value={"index","login","main"},method = RequestMethod.GET)
     public String main(HttpServletRequest request){
         {
             Optional<UserVo> userVoOptional = WebUtils.getCurrentLoginUser(request.getSession());
@@ -41,6 +42,9 @@ public class LoginController {
             try {
                 Subject subject = SecurityUtils.getSubject();
                 subject.login(token);//执行登录
+
+                UserPwdVo user = (UserPwdVo) subject.getPrincipal();
+                WebUtils.setCurrentLoginSysUserToSession(request.getSession(),user);//保存session
                 msg.setSuccess(true);
             } catch (LockedAccountException e) {
                 msg.setTipInfo("账户被停用,请联系系统管理员");

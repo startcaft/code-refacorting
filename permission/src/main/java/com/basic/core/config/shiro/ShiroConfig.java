@@ -102,7 +102,7 @@ public class ShiroConfig {
         //配置访问权限
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
         //表示可以匿名访问
-        filterChainDefinitionMap.put("/admin/index", "anon");
+        filterChainDefinitionMap.put("/admin/main", "anon");
         filterChainDefinitionMap.put("/admin/login","anon");
         filterChainDefinitionMap.put("/statics/**","anon");/*mvc配置的资源文件的映射路径*/
         //登出
