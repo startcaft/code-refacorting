@@ -1,9 +1,6 @@
 package com.basic.core.entity.vo;
 
-/**
- * Created by startcaft on 2017/7/7.
- */
-public class UserPwdVo extends UserVo {
+public class UserPwdVo extends UserVo implements java.io.Serializable {
 
     private String password;
 

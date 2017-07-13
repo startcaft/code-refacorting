@@ -7,7 +7,7 @@ public class MsgJson {
 
     private boolean success = false;
     private Object resultData;
-    private String tipInfo = "请求失败";
+    private String tipInfo;
 
     public boolean isSuccess() {
         return success;
