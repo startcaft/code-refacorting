@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * Created by startcaft on 2017/6/30.
  */
-public class ResourceVo {
+public class ResourceVo extends BasicVo {
 
     private Date createDatetime;
     private String description;
