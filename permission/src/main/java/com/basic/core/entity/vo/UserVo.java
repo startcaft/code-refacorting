@@ -14,8 +14,8 @@ public class UserVo extends BasicVo {
     private Date createDatetime;
     private String loginName;
     private String name;
-    private Integer sex;                            //性别
-    private String gender;
+    private Integer gender;
+    private String genderDesc;
     private Integer statesCode;
     private String statesMsg;
     private Long organizationId;
@@ -56,20 +56,20 @@ public class UserVo extends BasicVo {
         this.name = name;
     }
 
-    public Integer getSex() {
-        return sex;
-    }
-
-    public void setSex(Integer sex) {
-        this.sex = sex;
-    }
-
-    public String getGender() {
+    public Integer getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
+    }
+
+    public String getGenderDesc() {
+        return genderDesc;
+    }
+
+    public void setGenderDesc(String genderDesc) {
+        this.genderDesc = genderDesc;
     }
 
     public Integer getStatesCode() {

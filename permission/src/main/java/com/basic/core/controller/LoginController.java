@@ -3,6 +3,7 @@ package com.basic.core.controller;
 import com.basic.core.entity.vo.MsgJson;
 import com.basic.core.entity.vo.UserPwdVo;
 import com.basic.core.entity.vo.UserVo;
+import com.basic.core.service.UserService;
 import com.basic.core.util.WebUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;

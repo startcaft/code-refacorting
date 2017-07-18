@@ -77,82 +77,7 @@
                     </div>
                     <!--导航栏菜单-->
                     <pk:SecondLevelMenu/>
-                    <%--<ul class="nav nav-list">--%>
-                        <%--<li class="active">--%>
-                            <%--<a url="/" href="javascript:;" data-index="152">--%>
-                                <%--<i class="menu-icon fa fa-desktop"></i>--%>
-                                <%--<span class="menu-text">控制台</span></a>--%>
-                            <%--<b class="arrow"></b>--%>
-                        <%--</li>--%>
-                        <%--<li class="">--%>
-                            <%--<a href="#" class="dropdown-toggle">--%>
-                                <%--<i class="menu-icon fa fa-android"></i>--%>
-                                <%--<span class="menu-text">APP管理</span>--%>
-                                <%--<b class="arrow fa fa-angle-down"></b>--%>
-                            <%--</a>--%>
-                            <%--<b class="arrow"></b>--%>
-                            <%--<ul class="submenu">--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/app" data-index="192" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--App版本管理--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                            <%--</ul>--%>
-                        <%--<li class="">--%>
-                            <%--<a href="#" class="dropdown-toggle">--%>
-                                <%--<i class="menu-icon fa fa-cogs"></i>--%>
-                                <%--<span class="menu-text">系统管理</span>--%>
-                                <%--<b class="arrow fa fa-angle-down"></b>--%>
-                            <%--</a>--%>
-                            <%--<b class="arrow"></b>--%>
-                            <%--<ul class="submenu">--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/sys/res" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--资源管理--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/sys/org" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--组织管理--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/sys/role" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--角色管理--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/sys/user" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--用户管理--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/sys/log" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--操作日志--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                                <%--<li class="">--%>
-                                    <%--<a url="/dict" data-index="1" href="javascript:;">--%>
-                                        <%--<i class="menu-icon fa fa-caret-right"></i>--%>
-                                        <%--数据字典--%>
-                                    <%--</a>--%>
-                                    <%--<b class="arrow"></b>--%>
-                                <%--</li>--%>
-                            <%--</ul>--%>
-                        <%--</li>--%>
-                    <%--</ul>--%>
+
                     <!--导航栏收缩按钮-->
                     <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
                         <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
@@ -205,7 +130,7 @@
                         area: ['600px', '430px'],
                         fix: false, //不固定
                         maxmin: true,
-                        content: 'http://www.baidu.com'
+                        content: '${context}/admin/pwdSettings'
                     });
                 });
             }

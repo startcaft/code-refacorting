@@ -38,11 +38,11 @@
     <!-- 注意，这里返回了主键ID到User的id属性 -->
     <insert id="insert" parameterType="com.basic.core.entity.User" useGeneratedKeys="true" keyProperty="id">
         insert into sys_user (age, create_datetime,
-        loginname, name, password,
-        sex, state,organization_id)
+        login_name, name, password,
+        gender, states,organization_id)
         values (#{age,jdbcType=INTEGER}, #{createDatetime,jdbcType=TIMESTAMP},
-        #{loginname,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-        #{sex,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{organizationId,jdbcType=BIGINT})
+        #{loginName,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{gender,jdbcType=INTEGER}, #{states,jdbcType=INTEGER}, #{organizationId,jdbcType=BIGINT})
     </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.basic.core.entity.User">
@@ -63,11 +63,11 @@
             <if test="password != null">
                 password = #{password,jdbcType=VARCHAR},
             </if>
-            <if test="sex != null">
-                sex = #{sex,jdbcType=INTEGER},
+            <if test="gender != null">
+                gender = #{gender,jdbcType=INTEGER},
             </if>
-            <if test="state != null">
-                state = #{state,jdbcType=INTEGER},
+            <if test="states != null">
+                states = #{states,jdbcType=INTEGER},
             </if>
             <if test="organizationId != null">
                 organization_id = #{organizationId,jdbcType=BIGINT},

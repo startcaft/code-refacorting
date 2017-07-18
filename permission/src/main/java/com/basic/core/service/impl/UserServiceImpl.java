@@ -122,10 +122,24 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    @Transactional(value="masterTransactionManager",readOnly = true)
+    @Transactional(value="masterTransactionManager")
     @Override
     public void editUserPwd(Long id, String oldPwd, String pwd) throws Exception {
+        {
+            UserVo vo = this.searchSingleUser(id);
+            if (vo == null || vo.getId() == null){
+                throw new Exception("无法获取指定的系统用户");
+            }
+            if (userDao.selectByNameAndPwd(vo.getLoginName(),new Md5Hash(oldPwd).toString()) == null){
+                throw new Exception("错误的原始密码");
+            }
 
+            User user = new User();
+            user.setId(vo.getId());
+            user.setPassword(new Md5Hash(pwd).toString());
+
+            userDao.updateByPrimaryKeySelective(user);
+        }
     }
 
     @Transactional(value="masterTransactionManager",readOnly = true)
