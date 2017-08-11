@@ -129,7 +129,6 @@
 
     <!-- inline scripts related to this page -->
     <script src="${context}/statics/js/layer/layer.js"></script>
-    <script src="${context}/statics/datepicker/WdatePicker.js"></script>
 
     <script type="text/javascript">
         jQuery(function($){

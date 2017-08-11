@@ -55,4 +55,12 @@ public class LoginController {
             return msg;
         }
     }
+
+    @RequestMapping(value="/logout",method=RequestMethod.GET)
+    public void logOut(){
+        {
+            Subject subject = SecurityUtils.getSubject();
+            subject.logout();
+        }
+    }
 }

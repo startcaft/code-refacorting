@@ -99,7 +99,7 @@
                             <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
                             <nav class="page-tabs J_menuTabs">
                                 <div class="page-tabs-content" style="margin-left: 0px;">
-                                    <a href="javascript:;" class="J_menuTab active" data-id="/home">控制台</a>
+                                    <a href="javascript:;" class="J_menuTab active" data-id="http://www.baidu.com">控制台</a>
                                 </div>
                             </nav>
                             <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i></button>
@@ -117,9 +117,100 @@
         <script src="${ context }/statics/js/contabs.min.js"></script>
         <script type="text/javascript">
             var currentIframe;
+            var contextPath = '${context}';
             $(function(){
+                menuEventInit(contextPath);
+                tabsEventInit();
                 initPwdSettingEvent();
             });
+
+            /**
+             * 导航菜单单击事件处理函数<br/>
+             * 获取到资源菜单的id和url和text，具体请看二级导航菜单的自定义标签的构成<br/>
+             * 在 content-main 下激活或者添加一个当前url和id组成的iframe<br/>
+             * 在 page-tabs-content 下激活或者添加一个当前id和text组成的a<br/>
+             * 跟easyui差不多，easyui封装的更加完善些。
+             */
+            function menuEventInit(contextPath){
+                $('.nav-list a').click(function(e){
+                    e.preventDefault();
+                    var url = $(this).attr('url');
+                    if(url){
+                        $('iframe').css('display','none');
+                        window.location.hash=url;
+//                        if(url=="/index"||url=="/"){
+//                            url="/home";
+//                        };
+                        var iframe=$("#content-main").find("[data-id='"+url+"']");
+                        $(".nav-list li").removeClass("active");
+                        $(this).parent("li").addClass("active");
+                        if(iframe.length>0){
+                            iframe.css("display","inline");
+                            currentIframe=iframe[0];
+                        }else{
+                            var index=$(this).attr("data-index");
+                            var ihtml='<iframe class="J_iframe" name="iframe'+index+'" width="100%" height="100%" src="'+url+'" frameborder="0" data-id="'+url+'" seamless></iframe>';
+                            $("#content-main").append(ihtml);
+                            currentIframe=$("#content-main").find("[data-id='"+url+"']")[0];
+                        }
+                        var tab=$(".page-tabs-content").find("[data-id='"+url+"']");
+                        $(".page-tabs-content a").removeClass("active");
+                        if(tab.length > 0){
+                            tab.addClass("active");
+                        }else{
+                            $(".page-tabs-content").append('<a href="javascript:;" class="J_menuTab active" data-id="'+url+'">'+$(this).text()+'<i class="fa fa-times-circle"></i></a>');
+                            tabsEventClear();
+                            tabsEventInit();
+                        }
+                    }
+                });
+            }
+
+            /**
+             * tabs选项卡的单击事件处理函数<br/>
+             */
+            function tabsEventInit(){
+                $(".page-tabs-content a").bind("click",function(){
+                    if($(this).hasClass("active")==false){
+                        $(".page-tabs-content a").removeClass("active");
+                        $(this).addClass("active");
+                        var menu=$('[url="'+($(this).attr("data-id")=='/home'?'/':$(this).attr("data-id"))+'"]');
+                        menu.click();
+                        $(".nav-list li").removeClass("active");
+                        menu.parent("li").addClass("active");
+                        $(".nav-list li").removeClass("open");
+                        menu.parent("li").parents("li").addClass("open");
+                        menu.parent("ul").css("display","block");
+                    }
+                });
+                $(".page-tabs-content .fa-times-circle").bind("click",function(){
+                    if($(this).parent("a").hasClass("active")){
+                        var nextnode=$(this).parent("a").next();
+                        $(".page-tabs-content a").removeClass("active");
+                        if(nextnode.length>0){
+                            nextnode.addClass("active");
+                        }else{
+                            nextnode=$(this).parent("a").prev();
+                        }
+                        nextnode.addClass("active");
+                        var menu=$('[url="'+(nextnode.attr("data-id")=='/home'?'/':nextnode.attr("data-id"))+'"]');
+                        menu.click();
+                        $(".nav-list li").removeClass("active");
+                        menu.parent("li").addClass("active");
+                        $(".nav-list li").removeClass("open");
+                        menu.parent("li").parents("li").addClass("open");
+                        menu.parent("ul").css("display","block");
+                    }
+                    var iframe=$("#content-main").find("[data-id='"+$(this).parent("a").attr("data-id")+"']");
+                    iframe.remove();
+                    $(this).parent("a").remove();
+                });
+            }
+
+            function tabsEventClear(){
+                $(".page-tabs-content a").unbind("click");
+                $(".page-tabs-content .fa-times-circle").unbind("click");
+            }
 
             /*修改密码*/
             function initPwdSettingEvent(){

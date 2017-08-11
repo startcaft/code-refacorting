@@ -8,10 +8,6 @@ import java.util.Set;
 
 public interface ResourceService {
 
-	/**获取登录用户的被授权的系统菜单**/
-
-	List<ResourceVo> getUserRoleMenus(String loginName) throws Exception;
-
 	/**获取登录用户的被授权的所有系统资源**/
 	List<ResourceVo> getUserRoleResrouces(String loginName) throws Exception;
 

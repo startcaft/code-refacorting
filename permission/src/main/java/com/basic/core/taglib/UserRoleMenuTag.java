@@ -31,7 +31,7 @@ public class UserRoleMenuTag extends RequestContextAwareTag {
             xmlStr.append("<ul class=\"nav nav-list\">");
             //默认页
             xmlStr.append("<li class=\"active\">");
-            xmlStr.append("<a url=\"/\" href=\"javascript:;\" data-index=\"0\">");
+            xmlStr.append("<a url=\"http://www.baidu.com\" href=\"javascript:;\" data-index=\"0\">");
             xmlStr.append("<i class=\"menu-icon fa fa-desktop\"></i>");
             xmlStr.append("<span class=\"menu-text\">控制台</span>");
             xmlStr.append("</a>");

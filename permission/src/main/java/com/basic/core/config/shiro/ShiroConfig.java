@@ -107,7 +107,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/statics/**","anon");/*mvc配置的资源文件的映射路径*/
         //登出
         filterChainDefinitionMap.put("/admin/logout","logout");
-    //标识需要认证才能访问
+        //标识需要认证才能访问
         filterChainDefinitionMap.put("/**", "authc");
         bean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return bean;

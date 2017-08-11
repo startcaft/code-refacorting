@@ -44,11 +44,12 @@ public class UserDataRealm extends AuthorizingRealm {
 
             try {
                 //添加权限
-                List<ResourceVo> voList = resourceService.getUserRoleMenus(loginName);
+                List<ResourceVo> voList = resourceService.getUserRoleResrouces(loginName);
                 Set<String> permissions = new HashSet<>();
                 voList.forEach((r) -> {
                     permissions.add(r.getUrl());
                 });
+
                 authorizationInfo.addStringPermissions(permissions);
 
                 //添加角色

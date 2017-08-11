@@ -25,6 +25,7 @@ public class WebApplicationExceptionFactory {
         if (ex instanceof BadSqlGrammarException){
             exception = new DbServerException("无法解析的SQL语句，例如字段名不一致");
         }
+        exception = new WebApplicationException("未知的异常");
         return exception;
     }
 }

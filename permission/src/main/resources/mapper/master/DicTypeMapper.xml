@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.core.dao.master.DicTypeDao">
+
+    <resultMap id="BaseResultMap" type="com.basic.core.entity.DicType">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+        <result column="app_id" jdbcType="BIGINT" property="appId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, name, remark, update_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dic_type
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_dic_type
+        order by update_time desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      delete from sys_dic_type
+      where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.basic.core.entity.DicType">
+      insert into sys_dic_type (name, remark,
+        update_time,app_id)
+      values (#{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+        #{updateTime,jdbcType=DATE},#{appId,jdbcType=BIGINT})
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.basic.core.entity.DicType">
+        update sys_dic_type
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=DATE},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

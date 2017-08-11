@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -24,32 +25,19 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public List<ResourceVo> getUserRoleMenus(String loginName) throws Exception {
-        {
-            List<ResourceVo> voList = new ArrayList<>();
-            List<Resource> resourceList = resDao.selectByLoginName(loginName);
-
-            //过滤功能按钮类型的资源和被停用的资源
-            Stream<Resource> resourceStream = resourceList.stream()
-                    .filter((r) -> r.getResourceType() == ResourceType.FUNC)
-                    .filter((r) -> r.getStates() == States.LOCKED);
-            resourceStream.forEach((r) -> {
-                ResourceVo vo = new ResourceVo();
-                BeanUtils.copyProperties(r,vo);
-                vo.setResTypeCode(r.getResourceType().getCode());
-                vo.setResTypeMsg(r.getResourceType().getDesc());
-                voList.add(vo);
-            });
-            return voList;
-        }
-    }
-
-    @Transactional(value="masterTransactionManager",readOnly = true)
-    @Override
     public List<ResourceVo> getUserRoleResrouces(String loginName) throws Exception {
         {
             List<Resource> resourceList = resDao.selectByLoginName(loginName);
-            return this.cycleCopyProperties(resourceList);
+            List<ResourceVo> voList = new ArrayList<>();
+
+            //过滤被停用的系统资源
+            Stream<Resource> resourceStream = resourceList.stream()
+                    .filter((r) -> r.getStates() != States.LOCKED);
+
+            resourceStream.forEach((r) -> {
+                voList.add(this.cycleCopyProperties(r));
+            });
+            return voList;
         }
     }
 
@@ -58,7 +46,11 @@ public class ResourceServiceImpl implements ResourceService {
     public List<ResourceVo> getRootLevelMenus() throws Exception {
         {
             List<Resource> list = resDao.selectRoots();
-            return this.cycleCopyProperties(list);
+            List<ResourceVo> voList = new ArrayList<>();
+            list.forEach((entity) -> {
+                voList.add(this.cycleCopyProperties(entity));
+            });
+            return voList;
         }
     }
 
@@ -67,33 +59,35 @@ public class ResourceServiceImpl implements ResourceService {
     public List<ResourceVo> getSecondLevelMenusByRoot(Long rootId,String loginName) throws Exception {
         {
             List<Resource> list = resDao.selectSecondLevelMenus(rootId,loginName);
-            return this.cycleCopyProperties(list);
+            List<ResourceVo> voList = new ArrayList<>();
+            list.forEach((entity) -> {
+                voList.add(this.cycleCopyProperties(entity));
+            });
+            return voList;
         }
     }
 
     /**
-     * 循环copyProperties
-     * @param list 原始查询到的集合
-     * @return
+     * 从模型对象到vo对象的属性拷贝
+     * @param entity Resource 模型对象
+     * @return ResourceVo vo对象
      */
-    private List<ResourceVo> cycleCopyProperties(List<Resource> list){
+    private ResourceVo cycleCopyProperties(Resource entity){
         {
-            List<ResourceVo> voList = new ArrayList<>();
-            list.forEach((r) -> {
-                ResourceVo vo = new ResourceVo();
-                BeanUtils.copyProperties(r, vo);
-                vo.setResTypeCode(r.getResourceType().getCode());
-                vo.setResTypeMsg(r.getResourceType().getDesc());
-                vo.setStatesCode(r.getStates().getCode());
-                vo.setStatesMsg(r.getStates().getMsg());
+            ResourceVo vo = new ResourceVo();
+            if (entity != null){
+                BeanUtils.copyProperties(entity, vo);
+                vo.setResTypeCode(entity.getResourceType().getCode());
+                vo.setResTypeMsg(entity.getResourceType().getDesc());
+                vo.setStatesCode(entity.getStates().getCode());
+                vo.setStatesMsg(entity.getStates().getMsg());
 
-                if (r.getResource() != null){
-                    vo.setPid(r.getResource().getId());
-                    vo.setPname(r.getResource().getName());
+                if (entity.getResource() != null){
+                    vo.setPid(entity.getResource().getId());
+                    vo.setPname(entity.getResource().getName());
                 }
-                voList.add(vo);
-            });
-            return voList;
+            }
+            return vo;
         }
     }
 }

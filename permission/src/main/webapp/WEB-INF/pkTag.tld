@@ -10,34 +10,4 @@
         <name>SecondLevelMenu</name>
         <tag-class>com.basic.core.taglib.UserRoleMenuTag</tag-class>
     </tag>
-    <!--权限功能按钮标签声明-->
-    <tag>
-        <name>permissionBtn</name>
-        <tag-class>com.basic.core.taglib.UserRoleButtonTag</tag-class>
-        <!--属性声明-->
-        <attribute>
-            <name>id</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>name</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>text</name>
-            <required>true</required>
-        </attribute>
-        <attribute>
-            <name>permission</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>className</name>
-            <required>false</required>
-        </attribute>
-        <attribute>
-            <name>style</name>
-            <required>false</required>
-        </attribute>
-    </tag>
 </taglib>

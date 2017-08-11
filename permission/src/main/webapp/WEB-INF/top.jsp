@@ -27,7 +27,7 @@
                 </li>
                 <li class="divider"></li>
                 <li>
-                    <a href="/loginOut">
+                    <a href="${pageContext.request.contextPath}/admin/logout">
                         <i class="ace-icon fa fa-power-off"></i>
                         退出
                     </a>
