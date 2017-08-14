@@ -1,18 +1,21 @@
 package com.basic.core.service.impl;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import com.basic.core.dao.master.DicTypeDao;
 import com.basic.core.entity.DicType;
+import com.basic.core.entity.query.Condition;
+import com.basic.core.entity.query.DicTypeVoQuery;
 import com.basic.core.entity.vo.DicTypeVo;
-import com.basic.core.entity.vo.ResourceVo;
+import com.basic.core.entity.vo.GridVo;
 import com.basic.core.service.DicTypeService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 @Service
 public class DicTypeServiceImpl implements DicTypeService {
@@ -22,17 +25,32 @@ public class DicTypeServiceImpl implements DicTypeService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public List<DicTypeVo> getList() throws Exception {
+    public GridVo<DicTypeVo> getList(DicTypeVoQuery query) throws Exception {
         {
             List<DicTypeVo> voList = new ArrayList<>();
-            List<DicType> types = typeDao.selectList();
+            GridVo<DicTypeVo> gridVo = new GridVo<>();
 
+            Map<String,Object> param = query.dynamicBuildWhereConditions(Arrays.asList(
+                    new Condition<DicTypeVoQuery>((q) -> !StringUtils.isEmpty(q.getName()),"name",query.getName())
+            ));
+
+            //分页
+            PageHelper.startPage(query.getPage(),query.getRows());
+            List<DicType> types = typeDao.selectList(param);
+            PageInfo<DicType> pageInfo = new PageInfo<DicType>(types);
+
+            //构建Vo值对象
             types.forEach((t) -> {
                 DicTypeVo vo = this.cycleCopyProperties(t);
                 voList.add(vo);
             });
 
-            return voList;
+            gridVo.setRows(voList);
+            gridVo.setPage(query.getPage());
+            gridVo.setTotal(pageInfo.getPages());
+            gridVo.setRecords(new Integer(pageInfo.getTotal()+""));
+
+            return gridVo;
         }
     }
 
@@ -57,6 +75,22 @@ public class DicTypeServiceImpl implements DicTypeService {
             entity.setUpdateTime(new Date());
 
             typeDao.insert(entity);
+        }
+    }
+
+    @Transactional(value="masterTransactionManager")
+    @Override
+    public void updateDicType(DicTypeVo vo) throws Exception {
+        {
+            if (vo.getId() == null){
+                throw new Exception("无法更新字典类别数据，因为没有指定的主键ID");
+            }
+
+            DicType entity = new DicType();
+            BeanUtils.copyProperties(vo,entity);
+            entity.setUpdateTime(new Date());
+
+            typeDao.updateByPrimaryKeySelective(entity);
         }
     }
 

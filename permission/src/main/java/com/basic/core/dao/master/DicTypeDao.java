@@ -3,6 +3,7 @@ package com.basic.core.dao.master;
 import com.basic.core.entity.DicType;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DicTypeDao {
 
@@ -14,5 +15,5 @@ public interface DicTypeDao {
 
     int updateByPrimaryKeySelective(DicType record);
 
-    List<DicType> selectList();
+    List<DicType> selectList(Map<String,Object> param);
 }

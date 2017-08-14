@@ -78,11 +78,6 @@
             var pager_selector = "#grid-pager";
 
             /*响应式的表格，固定代码*/
-            /* resize to fit page size */
-            $(window).on('resize.jqGird',function(){
-                $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-            });
-
             /*make the grid responsive */
             var parent_column = $(grid_selector).closest('[class*="col-"]');
             $(window).on('resize.jqGrid', function () {
@@ -103,12 +98,13 @@
                     { label: 'ID', name: 'id', key: true,width: 75,align: 'center'},
                     { label: '字典类型', name: 'name',width: 75,align: 'center' },
                     { label: '类名描述', name: 'remark', width: 250,align: 'center' },
-                    { label: '可供操作', name: 'id',formatter:fmatterOperation, width:120,align: 'center',sortable: false}
+                    { label: '可供操作', name: 'opr',formatter:fmatterOperation, width:120,align: 'center',sortable: false}
                 ],
                 viewrecords: true,
-                height: 280,
-                rowNum: 20,
-                sortname:"id",
+                height: '98%',
+                rowNum: 10,
+                rowList:[10,20,30],
+                sortname:"name",
                 sortorder:"desc",
                 multiselect: true,//checkbox多选
                 altRows: true,//隔行变色
@@ -123,8 +119,16 @@
                 }
             });
             $(window).triggerHandler('resize.jqGrid');
+        });
 
-
+        $("#btn_search").click(function(){
+            //此处可以添加对查询数据的合法验证
+            var keyword = $("#keyword").val();
+            $("#grid-table").jqGrid('setGridParam',{
+                datatype:'json',
+                postData:{'name':keyword}, //发送数据
+                page:1
+            }).trigger("reloadGrid"); //重新载入
         });
 
         $("#btn-add").click(function(){//添加字典类别
@@ -137,6 +141,32 @@
                 content: '${context}/admin/dics/add'
             });
         });
+
+        $("#btn-edit").click(function(){//编辑字典类别
+            var rid = getSingleSelectedRow();
+            var rowData = $("#grid-table").getRowData(rid);
+            if(rid == -1){
+                layer.msg("请选择一个类型", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }else if(rid == -2 ){
+                layer.msg("只能选择一个类型", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }else {
+                layer.open({
+                    title:'修改字典类别',
+                    type: 2,
+                    area: ['370px', '430px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${context}/admin/dics/add?typeId='+rowData.id
+                });
+            }
+        });
+
         //replace icons with FontAwesome icons like above
         function updatePagerIcons(table) {
             var replacement =
@@ -153,10 +183,27 @@
             })
         }
         function fmatterOperation(cellvalue, options, rowObject){
-            return '<button class="btn btn-primary btn-sm" onclick="to_dictdata_list('+cellvalue+')">查看数据列表</button>';
+            return '<button class="btn btn-primary btn-sm" onclick="to_dictdata_list('+rowObject.id+')">查看数据列表</button>';
         }
         function reloadGrid(){
             $("#grid-table").trigger("reloadGrid"); //重新载入
+        }
+
+        /*获取选中的一行的rowid，-1表示没有选中，-2表示选中多行*/
+        function getSingleSelectedRow() {
+            var grid = $("#grid-table");
+            var rowKey = grid.getGridParam("selrow");
+            if (!rowKey){//没有选中任何行
+                return "-1";
+            }else {
+                var selectedIDs = grid.getGridParam("selarrrow");
+                var result = "";
+                if(selectedIDs.length==1){
+                    return selectedIDs[0];
+                }else{//选中的行超过1
+                    return "-2";
+                }
+            }
         }
     </script>
 </body>

@@ -1,47 +1,50 @@
 package com.basic.core.entity.query;
 
-import javax.ws.rs.QueryParam;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 基础查询对象，包含page，rows，sort，order，分页查询的几个重要属性，当前页默认1，每页记录数默认20，排序字段，排序方向默认desc
+ * 分页查询基类
  */
 public abstract class BasicQuery {
 
-	@QueryParam("page")
-    private int page = 1;									// 当前页
-	@QueryParam("size")
-	private int rows = 20;									// 每页显示记录数
-	@QueryParam("sort")
-	private String sort;									// 排序字段
-	@QueryParam("order")
-	private String order = "desc";							// asc/desc
-	
+    private int page = 1;
+	private int rows = 20;
+	private String sidx;
+	private String sord = "desc";
+
 	public int getPage() {
 		return page;
 	}
+
 	public void setPage(int page) {
 		this.page = page;
 	}
+
 	public int getRows() {
 		return rows;
 	}
+
 	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	public String getSort() {
-		return sort;
+
+	public String getSidx() {
+		return sidx;
 	}
-	public void setSort(String sort) {
-		this.sort = sort;
+
+	public void setSidx(String sidx) {
+		this.sidx = sidx;
 	}
-	public String getOrder() {
-		return order;
+
+	public String getSord() {
+		return sord;
 	}
-	public void setOrder(String order) {
-		this.order = order;
+
+	public void setSord(String sord) {
+		this.sord = sord;
 	}
 
 	public final Map<String,Object> dynamicBuildWhereConditions(List<Condition> conditions){

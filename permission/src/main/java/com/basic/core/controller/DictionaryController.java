@@ -1,11 +1,11 @@
 package com.basic.core.controller;
 
 import com.basic.core.entity.App;
+import com.basic.core.entity.query.DicTypeVoQuery;
 import com.basic.core.entity.vo.DicTypeVo;
+import com.basic.core.entity.vo.GridVo;
 import com.basic.core.entity.vo.MsgJson;
 import com.basic.core.service.DicTypeService;
-import jdk.nashorn.internal.ir.RuntimeNode;
-import net.sf.ehcache.search.parser.MValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -41,10 +41,12 @@ public class DictionaryController {
 
     @RequestMapping(value="/types",method = RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
-    public List<DicTypeVo> typeList() throws Exception {
+    public GridVo<DicTypeVo> typeList(DicTypeVoQuery query) throws Exception {
         {
-            List<DicTypeVo> data = typeService.getList();
-            return data;
+//            GridVo<DicTypeVo> grid = new GridVo<>();
+//            List<DicTypeVo> data = typeService.getList(query);
+//            return grid;
+            return typeService.getList(query);
         }
     }
 
@@ -55,6 +57,14 @@ public class DictionaryController {
             MsgJson json = new MsgJson();
             if (vo.getId() != null){
                 //编辑
+                try {
+                    typeService.updateDicType(vo);
+                    json.setSuccess(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    json.setTipInfo(e.getMessage());
+                }
             }
             else {
                 //保存

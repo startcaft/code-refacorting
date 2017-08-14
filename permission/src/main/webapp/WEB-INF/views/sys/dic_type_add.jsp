@@ -114,7 +114,7 @@
                     var $btn = $("#submit-btn");
                     if($btn.hasClass("disabled")) return;
                     var postData = {
-                        id:"${item.id}",
+                        id:"${type.id}",
                         name:$("#name").val(),
                         remark: $("#remark").val()
                     };

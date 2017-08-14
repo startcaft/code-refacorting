@@ -22,10 +22,16 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     
-    <select id="selectList" resultMap="BaseResultMap">
+    <select id="selectList" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from sys_dic_type
+        <where>
+            <if test="name != null and name != ''">
+                <bind name="_name" value="'%'+name+'%'"/>
+                and name like #{_name}
+            </if>
+        </where>
         order by update_time desc
     </select>
 
