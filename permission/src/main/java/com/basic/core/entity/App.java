@@ -1,6 +1,6 @@
 package com.basic.core.entity;
 
-public class App extends BasicEntity {
+public class App extends BaseEntity {
 
     private String appName;
     private String appDesc;

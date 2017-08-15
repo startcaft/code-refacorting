@@ -22,7 +22,7 @@
         where id = #{id,jdbcType=BIGINT}
     </select>
     
-    <select id="selectList" resultMap="BaseResultMap" parameterType="map">
+    <select id="selectListDynamic" resultMap="BaseResultMap" parameterType="map">
         select
         <include refid="Base_Column_List"/>
         from sys_dic_type

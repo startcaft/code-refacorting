@@ -1,14 +1,11 @@
 package com.basic.core.entity.vo;
 
-import com.basic.core.entity.enums.ResourceType;
-import com.basic.core.entity.enums.States;
-
 import java.util.Date;
 
 /**
  * Created by startcaft on 2017/6/30.
  */
-public class ResourceVo extends BasicVo {
+public class ResourceVo extends BaseVo {
 
     private Date createDatetime;
     private String description;

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.core.dao.master.DicItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.basic.core.entity.DicItem">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="seq" jdbcType="INTEGER" property="seq"/>
+        <result column="dic_type_id" jdbcType="BIGINT" property="dicTypeId"/>
+    </resultMap>
+
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.basic.core.entity.DicItem">
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
+    </resultMap>
+    
+    <resultMap extends="ResultMapWithBLOBs" id="ResultMapWithDicType" type="com.basic.core.entity.DicItem">
+        <!--分步查询DicType-->
+        <association property="dicType" column="dic_type_id" select="com.basic.core.dao.master.DicTypeDao.selectByPrimaryKey"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id, name, value, seq, dic_type_id
+    </sql>
+    <sql id="Blob_Column_List">
+      remark
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sys_dic_item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    
+    <select id="selectListDynamic" parameterType="map" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from sys_dic_item
+        <where>
+            <if test="typeId != null">
+                and dic_type_id = #{typeId}
+            </if>
+            <if test="name != null and name != ''">
+                <bind name="_name" value="'%'+name+'%'"/>
+                and name like #{_name}
+            </if>
+        </where>
+        order by seq desc
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+      delete from sys_dic_item
+      where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.basic.core.entity.DicItem">
+        insert into sys_dic_item (name, value,
+          seq, dic_type_id, remark
+          )
+        values (#{name,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR},
+          #{seq,jdbcType=INTEGER}, #{dicTypeId,jdbcType=BIGINT}, #{remark,jdbcType=LONGVARCHAR}
+          )
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.basic.core.entity.DicItem">
+        update sys_dic_item
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="value != null">
+                value = #{value,jdbcType=VARCHAR},
+            </if>
+            <if test="seq != null">
+                seq = #{seq,jdbcType=INTEGER},
+            </if>
+            <if test="dicTypeId != null">
+                dic_type_id = #{dicTypeId,jdbcType=BIGINT},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+</mapper>

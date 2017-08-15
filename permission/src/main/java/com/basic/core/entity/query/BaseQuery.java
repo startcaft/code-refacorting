@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * 分页查询基类
  */
-public abstract class BasicQuery {
+public abstract class BaseQuery {
 
     private int page = 1;
 	private int rows = 20;

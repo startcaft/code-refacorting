@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 /**
  * 表示一个where条件
  */
-public class Condition<T extends BasicQuery> {
+public class Condition<T extends BaseQuery> {
 
     private Predicate<T> predicate;
     private String paramName;

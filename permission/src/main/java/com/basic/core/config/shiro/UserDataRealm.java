@@ -16,6 +16,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,7 @@ public class UserDataRealm extends AuthorizingRealm {
             SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
 
             try {
-                //添加权限
+                //添加权限，注意这里的权限不能有空值或者null，不然在验证权限的时候会报错
                 List<ResourceVo> voList = resourceService.getUserRoleResrouces(loginName);
                 Set<String> permissions = new HashSet<>();
                 voList.forEach((r) -> {

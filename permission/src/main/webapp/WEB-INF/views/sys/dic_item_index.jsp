@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <c:set var="context" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -12,6 +11,8 @@
     <jsp:include page="/WEB-INF/basecss.jsp" flush="true" />
 </head>
 <body class="no-skin">
+
+    <!-- /section:basics/navbar.layout -->
     <div class="main-container" id="main-container">
         <script type="text/javascript">
             try{ace.settings.check('main-container' , 'fixed')}catch(e){}
@@ -33,7 +34,7 @@
                                                 <span class="input-group-addon">
                                                     <i class="ace-icon fa fa-check"></i>
                                                 </span>
-                                                <input type="text" id="keyword" name="keyword" class="form-control search-query" placeholder="请输入字典名称关键字" />
+                                                <input type="text" id="keyword" name="keyword" class="form-control search-query" placeholder="请输入关键字" />
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -50,12 +51,8 @@
                     <div class="col-xs-12">
                         <div class="row-fluid" style="margin-bottom: 5px;">
                             <div class="span12 control-group">
-                                <shiro:hasPermission name="/admin/dics/add">
-                                    <button class="btn btn-primary" id="btn-add" type="button">添加</button>
-                                </shiro:hasPermission>
-                                <shiro:hasPermission name="/admin/dics/edit">
-                                    <button class="btn btn-info" id="btn-edit" type="button">编辑</button>
-                                </shiro:hasPermission>
+                                <button class="btn btn-primary" id="btn-add" type="button">添加</button>
+                                <button class="btn btn-info" id="btn-edit" type="button">编辑</button>
                             </div>
                         </div>
                         <!-- PAGE CONTENT BEGINS -->
@@ -77,7 +74,7 @@
     <!-- basic scripts -->
     <jsp:include page="/WEB-INF/basejs.jsp" flush="true" />
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             var grid_selector = "#grid-table";
             var pager_selector = "#grid-pager";
 
@@ -94,15 +91,17 @@
                 }
             })
 
-            $('#grid-table').jqGrid({
-                url:'${context}/admin/dics/types',
+            $("#grid-table").jqGrid({
+                url:'${context}/admin/dics/items/search?typeId=' + ${requestScope.typeId},
                 mtype: "GET",
                 datatype: "json",
                 colModel: [
                     { label: 'ID', name: 'id', key: true,width: 75,align:'center'},
-                    { label: '字典类型', name: 'name',width: 75,align:'center'},
-                    { label: '类名描述', name: 'remark', width: 250,align:'center'},
-                    { label: '可供操作', name: 'opr',formatter:fmatterOperation, width:120,align: 'center',sortable: false}
+                    { label: '名称', name: 'name',width: 75,align:'center'},
+                    { label: '数据值', name: 'value',width: 75,align:'center'},
+                    { label: '排序号', name: 'seq',width: 75,align:'center'},
+                    { label: '描述', name: 'remark', width: 250,align:'center'},
+                    { label: '操作', name: 'opr',formatter:fmatterOperation, width:120,sortable:false,align:'center'}
                 ],
                 viewrecords: true,
                 height: 'auto',
@@ -115,99 +114,115 @@
                 recordtext:"{0} - {1} 共 {2} 条",
                 pgtext:"第 {0} 页 共 {1} 页",
                 pager: pager_selector,
-                loadComplete : function() {
+                loadComplete : function(data) {
                     var table = this;
                     setTimeout(function(){
                         updatePagerIcons(table);
                     }, 0);
+                    //height:'auto' IE下的水平滚动条bug
+                    $(grid_selector).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'scroll' });
                 }
             });
             $(window).triggerHandler('resize.jqGrid');
+
         });
 
-        $("#btn_search").click(function(){
+        $("#btn_search").click(function(){//查询
             //此处可以添加对查询数据的合法验证
             var keyword = $("#keyword").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':keyword}, //发送数据
+                postData:{'name':keyword},
                 page:1
-            }).trigger("reloadGrid"); //重新载入
+            }).trigger("reloadGrid");
         });
 
-        $("#btn-add").click(function(){//添加字典类别
+        $("#btn-add").click(function(){//添加
             layer.open({
-                title:'添加字典类别',
+                title:'添加字典项',
                 type: 2,
-                area: ['370px', '430px'],
+                area: ['370px', '400px'],
                 fix: false, //不固定
                 maxmin: true,
-                content: '${context}/admin/dics/add'
+                content: '${context}/admin/dics/items/add?typeId=${requestScope.typeId}'
             });
         });
 
-        $("#btn-edit").click(function(){//编辑字典类别
-            var rid = getSingleSelectedRow();
+        $("#btn-edit").click(function(){//编辑
+            var rid = selectSingleRow();
             var rowData = $("#grid-table").getRowData(rid);
             if(rid == -1){
-                layer.msg("请选择一个类型", {
+                layer.msg("请选择一项", {
                     icon: 2,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 });
             }else if(rid == -2 ){
-                layer.msg("只能选择一个类型", {
+                layer.msg("只能选择一项", {
                     icon: 2,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 });
             }else {
                 layer.open({
-                    title:'修改字典类别',
+                    title:'修改数据',
                     type: 2,
                     area: ['370px', '430px'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${context}/admin/dics/add?typeId='+rowData.id
+                    content: '${context}/admin/dics/items/add?typeId=${requestScope.typeId}&itemId=' + rowData.id
                 });
             }
         });
 
-        function fmatterOperation(cellvalue, options, rowObject){
-            return '<button class="btn btn-primary btn-sm" onclick="to_dictdata_list('+rowObject.id+')">查看数据列表</button>';
-        }
+        function delete_data(id){//删除
+            var submitData={itemId:id};
 
-        function to_dictdata_list(id){
-            var rowData = $("#grid-table").jqGrid('getRowData',id);
-            parent.layer.open({
-                title:'字典类[' + rowData.name + ']的数据列表',
-                type: 2,
-                area: ['80%', '80%'],
-                fix: false, //不固定
-                maxmin: true,
-                content: '${context}/admin/dics/items/'+id
+
+            layer.confirm('您确定要删除该字典项？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.post("${context}/admin/dics/items/remove", submitData,function(data) {
+                    if (data.success) {
+                        layer.msg("删除成功", {
+                            icon: 1,
+                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                        },function(){
+                            $("#grid-table").trigger("reloadGrid"); //重新载入
+                        });
+                    }else{
+                        layer.msg(data.tipInfo);
+                    }
+                },"json");
+            }, function(){
+                console.log('取消删除');
             });
+
         }
 
-        /*获取选中的一行的rowid，-1表示没有选中，-2表示选中多行*/
-        function getSingleSelectedRow() {
+        function fmatterOperation(cellvalue, options, rowObject){
+            return '<button class="btn btn-danger btn-sm" onclick="delete_data('+rowObject.id+')">删除</button>';
+        }
+
+        function reloadGrid(){
+            $("#grid-table").trigger("reloadGrid"); //重新载入
+        }
+
+        function selectSingleRow() {
             var grid = $("#grid-table");
             var rowKey = grid.getGridParam("selrow");
-            if (!rowKey){//没有选中任何行
+            if (!rowKey){
                 return "-1";
             }else {
                 var selectedIDs = grid.getGridParam("selarrrow");
                 var result = "";
                 if(selectedIDs.length==1){
                     return selectedIDs[0];
-                }else{//选中的行超过1
+                }else{
                     return "-2";
                 }
             }
         }
-        /*刷新列表*/
-        function reloadGrid(){
-            $("#grid-table").trigger("reloadGrid"); //重新载入
-        }
-        /*replace icons with FontAwesome icons like above*/
+
+        //replace icons with FontAwesome icons like above
         function updatePagerIcons(table) {
             var replacement =
                 {

@@ -16,22 +16,32 @@
         <div class="main-container-inner">
             <div class="main-content" style="margin-left: 0px;">
                 <div class="page-content">
+
                     <div class="row">
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
                             <div class="widget-box">
+
                                 <div class="widget-body">
                                     <div class="widget-main">
                                         <!-- #section:plugins/fuelux.wizard.container -->
                                         <div class="step-content pos-rel" id="step-container">
                                             <div class="step-pane active" id="step1">
                                                 <form class="form-horizontal" id="validation-form" method="post">
-                                                    <input name="id" type="hidden" value="${type.id}"/>
+                                                    <input name="id" type="hidden" value="${item.id}"/>
                                                     <div class="form-group">
                                                         <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">名称</label>
                                                         <div class="col-xs-12 col-sm-9">
                                                             <div class="clearfix">
-                                                                <input type="text" id="name" name="name" value="${type.name}" class="col-xs-12 col-sm-6">
+                                                                <input type="text" id="name" name="name" value="${item.name}" class="col-xs-12 col-sm-6">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="value">数据值</label>
+                                                        <div class="col-xs-12 col-sm-9">
+                                                            <div class="clearfix">
+                                                                <input type="text" id="value" name="value" value="${item.value}" class="col-xs-12 col-sm-6">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -39,7 +49,15 @@
                                                         <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="remark">描述</label>
                                                         <div class="col-xs-12 col-sm-9">
                                                             <div class="clearfix">
-                                                                <input type="text" id="remark" name="remark" value="${type.remark}" class="col-xs-12 col-sm-6">
+                                                                <input type="text" id="remark" name="remark" value="${item.remark}" class="col-xs-12 col-sm-6">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="seq">排序号</label>
+                                                        <div class="col-xs-12 col-sm-9">
+                                                            <div class="clearfix">
+                                                                <input type="text" id="seq" name="seq" value="${item.seq}" class="col-xs-12 col-sm-6">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -71,7 +89,9 @@
     <!-- basic scripts -->
     <jsp:include page="/WEB-INF/basejs.jsp" flush="true" />
     <script type="text/javascript">
-        jQuery(function ($) {
+
+        jQuery(function($) {
+
             var $validation = true;
             $('#validation-form').validate({
                 errorElement: 'div',
@@ -80,20 +100,37 @@
                 rules: {
                     name:{
                         required: true
+                    },
+                    seq:{
+                        required: true,
+                        digits:true
+
+                    },
+                    value:{
+                        required: true
                     }
                 },
                 messages: {
                     name:{
                         required: "请输入名称"
+                    },
+                    seq:{
+                        required: "请输入排序号",
+                        digits:"排序号只能是整数"
+                    },
+                    value:{
+                        required: "必填"
                     }
                 },
                 highlight: function (e) {
                     $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
                 },
+
                 success: function (e) {
                     $(e).closest('.form-group').removeClass('has-error');//.addClass('has-info');
                     $(e).remove();
                 },
+
                 errorPlacement: function (error, element) {
                     if(element.is(':checkbox') || element.is(':radio')) {
                         var controls = element.closest('div[class*="col-"]');
@@ -114,14 +151,18 @@
                     var $btn = $("#submit-btn");
                     if($btn.hasClass("disabled")) return;
                     var postData = {
-                        id:"${type.id}",
+                        id:"${item.id}",
                         name:$("#name").val(),
-                        remark: $("#remark").val()
+                        remark: $("#remark").val(),
+                        seq:$("#seq").val(),
+                        value:$("#value").val(),
+                        dicTypeId:"${requestScope.typeId}"
+
                     };
+                    console.log(postData);
                     $btn.addClass("disabled");
-                    $.post('${pageContext.request.contextPath}/admin/dics/save', postData,function(data) {
+                    $.post('${pageContext.request.contextPath}/admin/dics/items/save', postData,function(data) {
                         $btn.removeClass("disabled");
-//                        console.log(data);
                         if(data.success){
                             layer.msg('操作成功', {
                                 icon: 1,
@@ -143,6 +184,7 @@
                 invalidHandler: function (form) {
                 }
             });
+
         });
 
         function closeView(){

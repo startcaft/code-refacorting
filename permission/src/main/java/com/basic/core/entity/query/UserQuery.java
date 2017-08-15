@@ -1,7 +1,7 @@
 package com.basic.core.entity.query;
 
 
-public class UserQuery extends BasicQuery {
+public class UserQuery extends BaseQuery {
 
     private String name;//查询姓名
     private Long orgId;//查询组织

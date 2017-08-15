@@ -7,7 +7,7 @@ import java.util.List;
 import com.basic.core.entity.enums.Gender;
 import com.basic.core.entity.enums.States;
 
-public class User extends BasicEntity {
+public class User extends BaseEntity {
 	
     private Integer age;
     private Date createDatetime;

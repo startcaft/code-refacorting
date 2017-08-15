@@ -1,10 +1,8 @@
 package com.basic.core.entity;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
-
 import java.util.Date;
 
-public class DicType extends BasicEntity {
+public class DicType extends BaseEntity {
 
     private String name;
 

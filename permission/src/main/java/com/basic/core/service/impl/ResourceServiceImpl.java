@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
@@ -30,9 +31,10 @@ public class ResourceServiceImpl implements ResourceService {
             List<Resource> resourceList = resDao.selectByLoginName(loginName);
             List<ResourceVo> voList = new ArrayList<>();
 
-            //过滤被停用的系统资源
+            //过滤被停用的系统资源和url为空的资源
             Stream<Resource> resourceStream = resourceList.stream()
-                    .filter((r) -> r.getStates() != States.LOCKED);
+                    .filter((r) -> r.getStates() != States.LOCKED)
+                    .filter((r) -> !StringUtils.isEmpty(r.getUrl()));
 
             resourceStream.forEach((r) -> {
                 voList.add(this.cycleCopyProperties(r));

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by startcaft on 2017/7/18.
  */
-public class DicTypeVo extends BasicVo {
+public class DicTypeVo extends BaseVo {
 
     private String name;
 

@@ -2,7 +2,7 @@ package com.basic.core.entity;
 
 import java.util.Date;
 
-public class Organization extends BasicEntity {
+public class Organization extends BaseEntity {
 	
     private String address;
     private String code;

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <div class="navbar-header pull-left">
     <a href="javascript:;" class="navbar-brand">
         <small>
@@ -11,9 +12,10 @@
     <ul class="nav ace-nav">
         <li class="light-blue">
             <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                <img class="nav-user-photo" src="${pageContext.request.contextPath}/statics/ace-1.3.3/assets/avatars/user.jpg" alt="User's Photo">
                 <span class="user-info">
-                    <small>welcome,</small>
-                    张三
+                    <small>Welcome,</small>
+                    <shiro:principal property="name"/>
                 </span>
                 <i class="ace-icon fa fa-caret-down"></i>
             </a>

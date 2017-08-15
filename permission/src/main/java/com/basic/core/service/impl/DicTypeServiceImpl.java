@@ -3,7 +3,7 @@ package com.basic.core.service.impl;
 import com.basic.core.dao.master.DicTypeDao;
 import com.basic.core.entity.DicType;
 import com.basic.core.entity.query.Condition;
-import com.basic.core.entity.query.DicTypeVoQuery;
+import com.basic.core.entity.query.DicTypeQuery;
 import com.basic.core.entity.vo.DicTypeVo;
 import com.basic.core.entity.vo.GridVo;
 import com.basic.core.service.DicTypeService;
@@ -25,18 +25,18 @@ public class DicTypeServiceImpl implements DicTypeService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public GridVo<DicTypeVo> getList(DicTypeVoQuery query) throws Exception {
+    public GridVo<DicTypeVo> getList(DicTypeQuery query) throws Exception {
         {
             List<DicTypeVo> voList = new ArrayList<>();
             GridVo<DicTypeVo> gridVo = new GridVo<>();
 
             Map<String,Object> param = query.dynamicBuildWhereConditions(Arrays.asList(
-                    new Condition<DicTypeVoQuery>((q) -> !StringUtils.isEmpty(q.getName()),"name",query.getName())
+                    new Condition<DicTypeQuery>((q) -> !StringUtils.isEmpty(q.getName()),"name",query.getName())
             ));
 
             //分页
             PageHelper.startPage(query.getPage(),query.getRows());
-            List<DicType> types = typeDao.selectList(param);
+            List<DicType> types = typeDao.selectListDynamic(param);
             PageInfo<DicType> pageInfo = new PageInfo<DicType>(types);
 
             //构建Vo值对象

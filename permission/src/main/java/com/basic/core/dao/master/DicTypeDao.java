@@ -15,5 +15,5 @@ public interface DicTypeDao {
 
     int updateByPrimaryKeySelective(DicType record);
 
-    List<DicType> selectList(Map<String,Object> param);
+    List<DicType> selectListDynamic(Map<String,Object> param);
 }

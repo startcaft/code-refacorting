@@ -1,9 +1,9 @@
-package com.basic.core.entity.vo;
+package com.basic.core.entity;
 
 /**
- * 数据Vo类，直接响应至客户端
+ * 实体基类，包含一个Long类型的id属性，表示一个主键字段
  */
-public abstract class BasicVo {
+public abstract class BaseEntity {
 
     private Long id;
 

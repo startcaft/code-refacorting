@@ -3,7 +3,7 @@ package com.basic.core.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Role extends BasicEntity {
+public class Role extends BaseEntity {
 	
     private String description;
     private String name;

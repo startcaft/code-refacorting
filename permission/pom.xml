@@ -29,6 +29,33 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+            <!--使用下面这个和上面排除spring-boot-starter-logging是一样的效果
+            <exclusions>
+               <exclusion>
+                  <artifactId>logback-classic</artifactId>
+                  <groupId>ch.qos.logback</groupId>
+               </exclusion>
+               <exclusion>
+                  <artifactId>log4j-over-slf4j</artifactId>
+                  <groupId>org.slf4j</groupId>
+               </exclusion>
+            </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
         </dependency>
         <!--servlet依赖-->
         <dependency>
@@ -116,6 +143,11 @@
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.0</version>
         </dependency>
     </dependencies>
 

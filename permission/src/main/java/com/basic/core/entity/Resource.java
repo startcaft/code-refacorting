@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Resource extends BasicEntity {
+public class Resource extends BaseEntity {
 	
     private Date createDatetime;
     private String description;

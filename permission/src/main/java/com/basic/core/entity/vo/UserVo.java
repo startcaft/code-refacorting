@@ -1,14 +1,12 @@
 package com.basic.core.entity.vo;
 
-import com.fasterxml.jackson.databind.introspect.TypeResolutionContext;
-
 import java.util.Date;
 import java.util.List;
 
 /**
  * Created by startcaft on 2017/6/23.
  */
-public class UserVo extends BasicVo {
+public class UserVo extends BaseVo {
 
     private Integer age;
     private Date createDatetime;
