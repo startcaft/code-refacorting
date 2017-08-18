@@ -40,7 +40,7 @@
       where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.basic.core.entity.DicType">
+    <insert id="insert" parameterType="com.basic.core.entity.DicType" useGeneratedKeys="true" keyProperty="id">
       insert into sys_dic_type (name, remark,
         update_time,app_id)
       values (#{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},

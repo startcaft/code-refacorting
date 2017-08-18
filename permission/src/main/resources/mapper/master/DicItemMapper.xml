@@ -58,7 +58,7 @@
       where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="com.basic.core.entity.DicItem">
+    <insert id="insert" parameterType="com.basic.core.entity.DicItem" useGeneratedKeys="true" keyProperty="id">
         insert into sys_dic_item (name, value,
           seq, dic_type_id, remark
           )

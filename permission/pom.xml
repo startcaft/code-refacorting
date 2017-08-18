@@ -144,10 +144,37 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
         </dependency>
+        <!-- spring data redis -->
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <version>1.8.6.RELEASE</version>
+        </dependency>
+        <!--jms spring-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jms</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.activemq</groupId>
+            <artifactId>activemq-all</artifactId>
+            <version>5.11.1</version>
+        </dependency>
+        <!--fast json-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.36</version>
         </dependency>
     </dependencies>
 

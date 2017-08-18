@@ -1,5 +1,6 @@
 package com.basic.core.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.basic.core.dao.master.DicTypeDao;
 import com.basic.core.entity.DicType;
 import com.basic.core.entity.query.Condition;
@@ -7,14 +8,20 @@ import com.basic.core.entity.query.DicTypeQuery;
 import com.basic.core.entity.vo.DicTypeVo;
 import com.basic.core.entity.vo.GridVo;
 import com.basic.core.service.DicTypeService;
+import com.basic.core.service.MQProducerService;
+import com.basic.core.util.GlobalConstants;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.activemq.command.ActiveMQQueue;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.jms.Destination;
+import javax.lang.model.element.Name;
 import java.util.*;
 
 @Service
@@ -22,6 +29,13 @@ public class DicTypeServiceImpl implements DicTypeService {
 
     @Autowired
     private DicTypeDao typeDao;
+
+    @Autowired
+    private MQProducerService mqProducerService;
+
+    @Autowired
+    @Qualifier(GlobalConstants.DICTYPE_QUEUE_BEAN_NAME)
+    private ActiveMQQueue destination;
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
@@ -75,6 +89,9 @@ public class DicTypeServiceImpl implements DicTypeService {
             entity.setUpdateTime(new Date());
 
             typeDao.insert(entity);
+
+            //推送
+            mqProducerService.sendMessage(this.destination, JSON.toJSONString(entity));
         }
     }
 
@@ -91,6 +108,9 @@ public class DicTypeServiceImpl implements DicTypeService {
             entity.setUpdateTime(new Date());
 
             typeDao.updateByPrimaryKeySelective(entity);
+
+            //推送
+            mqProducerService.sendMessage(this.destination, JSON.toJSONString(entity));
         }
     }
 
