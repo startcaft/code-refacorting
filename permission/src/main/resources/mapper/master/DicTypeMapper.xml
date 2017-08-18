@@ -12,7 +12,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, name, remark, update_time
+      id, name, remark, update_time,app_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">

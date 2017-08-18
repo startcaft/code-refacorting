@@ -1,4 +1,4 @@
-package com.basic.core.config.jms;
+package com.mq.redis.config;
 
 import com.basic.core.entity.contants.GlobalConstants;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -47,7 +47,7 @@ public class ActiveMQConfig {
         }
     }
 
-    // ActiveMQQueue 指定队列名称的Destination，消息的目的地
+    // ActiveMQQueue 指定队列名称的Destination，消息的来源
     @Bean(name = GlobalConstants.DICTYPE_QUEUE_BEAN_NAME)
     public ActiveMQQueue activeMQQueue(){
         {

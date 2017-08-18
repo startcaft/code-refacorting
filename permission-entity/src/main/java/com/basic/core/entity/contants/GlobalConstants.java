@@ -1,4 +1,4 @@
-package com.basic.core.util;
+package com.basic.core.entity.contants;
 
 /**
  * 全局常量

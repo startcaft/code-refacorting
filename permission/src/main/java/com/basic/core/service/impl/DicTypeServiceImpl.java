@@ -3,13 +3,13 @@ package com.basic.core.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.basic.core.dao.master.DicTypeDao;
 import com.basic.core.entity.DicType;
+import com.basic.core.entity.contants.GlobalConstants;
 import com.basic.core.entity.query.Condition;
 import com.basic.core.entity.query.DicTypeQuery;
 import com.basic.core.entity.vo.DicTypeVo;
 import com.basic.core.entity.vo.GridVo;
 import com.basic.core.service.DicTypeService;
 import com.basic.core.service.MQProducerService;
-import com.basic.core.util.GlobalConstants;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.activemq.command.ActiveMQQueue;
@@ -20,8 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.jms.Destination;
-import javax.lang.model.element.Name;
 import java.util.*;
 
 @Service

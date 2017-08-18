@@ -9,7 +9,7 @@
 
 	<modules>
 		<module>../refactoring-01-helloworld</module>
-        <module>../permission-entity</module>
+		<module>../permission-entity</module>
     </modules>
 
 	<name>refactoring-parent</name>
