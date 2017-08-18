@@ -9,7 +9,8 @@
 
 	<modules>
 		<module>../refactoring-01-helloworld</module>
-	</modules>
+        <module>../permission-entity</module>
+    </modules>
 
 	<name>refactoring-parent</name>
 	<url>http://maven.apache.org</url>

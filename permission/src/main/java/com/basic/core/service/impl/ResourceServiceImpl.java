@@ -2,9 +2,7 @@ package com.basic.core.service.impl;
 
 import com.basic.core.dao.master.ResourceDao;
 import com.basic.core.entity.Resource;
-import com.basic.core.entity.enums.ResourceType;
 import com.basic.core.entity.enums.States;
-import com.basic.core.entity.vo.NodeTree;
 import com.basic.core.entity.vo.ResourceVo;
 import com.basic.core.service.ResourceService;
 import org.springframework.beans.BeanUtils;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;

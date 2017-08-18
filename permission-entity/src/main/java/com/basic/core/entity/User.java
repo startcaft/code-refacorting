@@ -1,11 +1,11 @@
 package com.basic.core.entity;
 
+import com.basic.core.entity.enums.Gender;
+import com.basic.core.entity.enums.States;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import com.basic.core.entity.enums.Gender;
-import com.basic.core.entity.enums.States;
 
 public class User extends BaseEntity {
 	
