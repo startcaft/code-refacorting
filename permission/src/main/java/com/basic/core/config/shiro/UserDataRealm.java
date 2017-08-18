@@ -72,9 +72,12 @@ public class UserDataRealm extends AuthorizingRealm {
             String loginName = (String) token.getPrincipal();
             String password = new String((char[]) token.getCredentials());
 
-            //查询用户，可能会抛出异常
-            UserPwdVo user = userService.userLogin(loginName, password);
-
+            UserPwdVo user = null;
+            try {
+                user = userService.userLogin(loginName, password);
+            } catch (Exception e){
+                throw new AuthenticationException(e.getMessage());
+            }
             /*如果要给密码加盐
             //盐值，传递给AuthenticationInfo对象
             //ByteSource crendentialsSalt = ByteSource.Util.bytes(username);
@@ -91,11 +94,10 @@ public class UserDataRealm extends AuthorizingRealm {
     @Override
     protected void clearCachedAuthenticationInfo(PrincipalCollection principals) {
         {
-            LOGGER.info("开始清理用户认证的缓存信息");
             Cache<Object, AuthenticationInfo> cache = this.getAuthenticationCache();
             Set<Object> keys = cache.keys();
             for (Object obj : keys) {
-                LOGGER.info("认证缓存：" + obj + "------" + cache.get(obj) + "------");
+                LOGGER.info("remove认证缓存：" + obj + "------" + cache.get(obj) + "------");
             }
 
             super.clearCachedAuthenticationInfo(principals);
@@ -106,11 +108,10 @@ public class UserDataRealm extends AuthorizingRealm {
     @Override
     protected void clearCachedAuthorizationInfo(PrincipalCollection principals) {
         {
-            LOGGER.info("开始清理用户授权的缓存信息");
             Cache<Object, AuthorizationInfo> cache = this.getAuthorizationCache();
             Set<Object> keys = cache.keys();
             for (Object obj : keys) {
-                LOGGER.info("授权缓存：" + obj + "------" + cache.get(obj) + "------");
+                LOGGER.info("remove授权缓存：" + obj + "------" + cache.get(obj) + "------");
             }
 
             super.clearCachedAuthorizationInfo(principals);

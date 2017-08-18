@@ -103,13 +103,13 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
-    public UserPwdVo userLogin(String loginName, String password) throws AuthenticationException {
+    public UserPwdVo userLogin(String loginName, String password) throws Exception {
         User user = userDao.selectByNameAndPwd(loginName, new Md5Hash(password).toString());
         if (user == null){
-            throw new AuthenticationException();//用户不存在，或密码错误
+            throw new Exception("用户不存在，或密码错误");//用户不存在，或密码错误
         }
         if (user.getStates() == States.LOCKED){
-            throw new LockedAccountException();//用户被锁定，无法使用
+            throw new Exception("用户被锁定，无法使用");//用户被锁定，无法使用
         }
         UserPwdVo vo = new UserPwdVo();
         BeanUtils.copyProperties(user,vo);

@@ -13,7 +13,7 @@ public interface DicItemMapper {
 
     DicItem selectByPrimaryKey(Long id);
 
-    List<DicItem> selectListDynamic(Map<String,Object> map);
+    List<DicItem> selectListDynamic(Map<String, Object> map);
 
     int updateByPrimaryKeySelective(DicItem record);
 }

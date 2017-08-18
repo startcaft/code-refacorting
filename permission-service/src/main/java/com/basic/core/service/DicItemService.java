@@ -1,6 +1,5 @@
 package com.basic.core.service;
 
-import com.basic.core.entity.DicItem;
 import com.basic.core.entity.query.DicItemQuery;
 import com.basic.core.entity.vo.DicItemVo;
 import com.basic.core.entity.vo.GridVo;

@@ -25,10 +25,10 @@
     </properties>
 
     <dependencies>
-        <!--依赖permission-entity-->
+        <!--依赖permission-dao -> entity-->
         <dependency>
             <groupId>com.startcaft.www</groupId>
-            <artifactId>permission-entity</artifactId>
+            <artifactId>permission-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- Spring Boot Web 依赖 -->
@@ -104,18 +104,6 @@
             <artifactId>spring-boot-legacy</artifactId>
         </dependency>
          -->
-        <!-- Spring Boot Mybatis 依赖 -->
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis-spring-boot}</version>
-        </dependency>
-        <!-- Mybatis 分页插件依赖 -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.0.3</version>
-        </dependency>
         <!-- MySQL 连接驱动依赖 -->
         <dependency>
             <groupId>mysql</groupId>
@@ -160,27 +148,6 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-redis</artifactId>
             <version>1.8.6.RELEASE</version>
-        </dependency>
-        <!--jms spring-->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jms</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-pool</groupId>
-            <artifactId>commons-pool</artifactId>
-            <version>1.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-all</artifactId>
-            <version>5.11.1</version>
-        </dependency>
-        <!--fast json-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.36</version>
         </dependency>
     </dependencies>
 
