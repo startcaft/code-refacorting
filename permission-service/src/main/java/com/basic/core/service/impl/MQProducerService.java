@@ -1,4 +1,4 @@
-package com.basic.core.service;
+package com.basic.core.service.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import javax.jms.Session;
  * JMS消息生产者服务，用于发送消息
  */
 @Component
-public class MQProducerService {
+class MQProducerService {
 
     private static final Logger LOGGER = Logger.getLogger(MQProducerService.class);
 

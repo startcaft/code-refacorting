@@ -25,7 +25,7 @@
     </properties>
 
     <dependencies>
-        <!--依赖permission-dao -> entity-->
+        <!--依赖permission-service -> dao -> entity-->
         <dependency>
             <groupId>com.startcaft.www</groupId>
             <artifactId>permission-service</artifactId>

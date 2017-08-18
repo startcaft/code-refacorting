@@ -1,16 +1,23 @@
 package com.mq.redis.config;
 
 import com.basic.core.entity.contants.GlobalConstants;
+import com.mq.redis.listener.DicTypeQueueMessageListener;
+import com.mq.redis.storage.DicTypeStorage;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.activemq.jms.pool.PooledConnectionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.jms.connection.SingleConnectionFactory;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
 @Configuration
+@Import(value = {RedisConfig.class})
 public class ActiveMQConfig {
 
     // ActiveMQ提供的真正的ConnectionFactory
@@ -56,14 +63,27 @@ public class ActiveMQConfig {
         }
     }
 
-    /** Spring提供的JmsTemplate用来消费消息 **/
+    // 自定义的MessageListener消息监听器
     @Bean
-    public JmsTemplate jmsTemplate(
-                                    @Qualifier("connectionFactory") SingleConnectionFactory connectionFactory){
+    public DicTypeQueueMessageListener dicTypeQueueMessageListener(@Autowired DicTypeStorage dicTypeStorage){
         {
-            JmsTemplate jmsTemplate = new JmsTemplate();
-            jmsTemplate.setConnectionFactory(connectionFactory);
-            return jmsTemplate;
+            DicTypeQueueMessageListener messageListener = new DicTypeQueueMessageListener(dicTypeStorage);
+            return messageListener;
+        }
+    }
+
+    /** Spring提供的MessageListenerContainer 负责接收消息并分发到MessageListener **/
+    @Bean
+    public DefaultMessageListenerContainer defaultMessageListenerContainer(
+            @Autowired DicTypeQueueMessageListener dicTypeQueueMessageListener,
+            @Qualifier(GlobalConstants.DICTYPE_QUEUE_BEAN_NAME) ActiveMQQueue destination,
+            @Qualifier("connectionFactory") SingleConnectionFactory connectionFactory){
+        {
+            DefaultMessageListenerContainer defaultMessageListenerContainer = new DefaultMessageListenerContainer();
+            defaultMessageListenerContainer.setMessageListener(dicTypeQueueMessageListener);
+            defaultMessageListenerContainer.setConnectionFactory(connectionFactory);
+            defaultMessageListenerContainer.setDestination(destination);
+            return defaultMessageListenerContainer;
         }
     }
 }

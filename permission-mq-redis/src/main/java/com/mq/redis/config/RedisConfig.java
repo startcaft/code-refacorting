@@ -1,5 +1,6 @@
 package com.mq.redis.config;
 
+import com.mq.redis.storage.DicTypeStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
 
-@Configuration
 public class RedisConfig {
 
     @Value("${spring.redis.host}")
@@ -62,6 +62,14 @@ public class RedisConfig {
             //2，我们使用字符串形式的key即可，因此：指定keySerializer为StringRedisSerializer类
             redisTemplate.setKeySerializer(new StringRedisSerializer());
             return redisTemplate;
+        }
+    }
+
+    @Bean
+    public DicTypeStorage dicTypeStorage(@Autowired RedisTemplate redisTemplate){
+        {
+            DicTypeStorage dicTypeStorage = new DicTypeStorage(redisTemplate);
+            return dicTypeStorage;
         }
     }
 }

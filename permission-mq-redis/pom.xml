@@ -23,10 +23,10 @@
     </properties>
 
     <dependencies>
-        <!--依赖permission-entity-->
+        <!--依赖permission-service -> dao -> entity-->
         <dependency>
             <groupId>com.startcaft.www</groupId>
-            <artifactId>permission-entity</artifactId>
+            <artifactId>permission-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <!-- Spring Boot Test 依赖 -->

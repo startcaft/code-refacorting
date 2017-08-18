@@ -9,7 +9,6 @@ import com.basic.core.entity.query.DicTypeQuery;
 import com.basic.core.entity.vo.DicTypeVo;
 import com.basic.core.entity.vo.GridVo;
 import com.basic.core.service.DicTypeService;
-import com.basic.core.service.MQProducerService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.activemq.command.ActiveMQQueue;
