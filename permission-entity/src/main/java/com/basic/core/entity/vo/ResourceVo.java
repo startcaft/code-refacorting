@@ -20,6 +20,9 @@ public class ResourceVo extends BaseVo {
     private Long pid;
 
     private String pname;       //父资源节点名称
+    private Integer level;       //层级
+    private boolean isLeaf;     //是否叶节点
+    private boolean expanded;    //是否展开
 
     public Date getCreateDatetime() {
         return createDatetime;
@@ -115,5 +118,29 @@ public class ResourceVo extends BaseVo {
 
     public void setPname(String pname) {
         this.pname = pname;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public boolean isLeaf() {
+        return isLeaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        isLeaf = leaf;
+    }
+
+    public boolean getExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
     }
 }

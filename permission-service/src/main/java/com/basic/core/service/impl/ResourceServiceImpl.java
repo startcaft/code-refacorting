@@ -2,6 +2,7 @@ package com.basic.core.service.impl;
 
 import com.basic.core.dao.master.ResourceDao;
 import com.basic.core.entity.Resource;
+import com.basic.core.entity.enums.ResourceType;
 import com.basic.core.entity.enums.States;
 import com.basic.core.entity.vo.ResourceVo;
 import com.basic.core.service.ResourceService;
@@ -59,6 +60,22 @@ public class ResourceServiceImpl implements ResourceService {
         {
             List<Resource> list = resDao.selectSecondLevelMenus(rootId,loginName);
             List<ResourceVo> voList = new ArrayList<>();
+            list.forEach((entity) -> {
+                voList.add(this.cycleCopyProperties(entity));
+            });
+            return voList;
+        }
+    }
+
+    @Transactional(value="masterTransactionManager",readOnly = true)
+    @Override
+    public List<ResourceVo> getAllResource(Long appId) throws Exception {
+        {
+            if (appId == null){
+                throw new Exception("需要提供指定的appId");
+            }
+            List<ResourceVo> voList = new ArrayList<>();
+            List<Resource> list = resDao.selectAll(appId);
             list.forEach((entity) -> {
                 voList.add(this.cycleCopyProperties(entity));
             });

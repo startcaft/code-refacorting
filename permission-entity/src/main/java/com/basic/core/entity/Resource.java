@@ -19,6 +19,9 @@ public class Resource extends BaseEntity {
     private States states;
     private String url;
     private Long pid;
+    private Integer level;
+    private boolean isLeaf;
+    private boolean expanded;
     
     private Resource resource; 										// 父节点
 	private List<Resource> resources = new ArrayList<Resource>();			// 子菜单
@@ -110,4 +113,28 @@ public class Resource extends BaseEntity {
 	public void setResources(List<Resource> resources) {
 		this.resources = resources;
 	}
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public boolean isLeaf() {
+        return isLeaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        isLeaf = leaf;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
 }

@@ -1,5 +1,6 @@
 package com.basic.core.controller;
 
+import com.basic.core.entity.App;
 import com.basic.core.entity.vo.MsgJson;
 import com.basic.core.entity.vo.ResourceVo;
 import com.basic.core.entity.vo.UserVo;
@@ -21,6 +22,9 @@ public class ResourceController {
 
     @Autowired
     private ResourceService resService;
+
+    @Autowired
+    private App app;
 
     @RequestMapping(value="/roots",method= RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
@@ -57,6 +61,14 @@ public class ResourceController {
                 msgJson.setSuccess(false);
             }
             return msgJson;
+        }
+    }
+
+    @RequestMapping(value = "/all",method = RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ResponseBody
+    public List<ResourceVo> getAllRes() throws Exception {
+        {
+            return resService.getAllResource(app.getId());
         }
     }
 }

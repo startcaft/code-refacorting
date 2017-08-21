@@ -13,6 +13,9 @@
         <result column="states" property="states" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="is_leaf" property="isLeaf" jdbcType="BOOLEAN"/>
+        <result column="expanded" property="expanded" jdbcType="BOOLEAN"/>
     </resultMap>
 
     <resultMap type="com.basic.core.entity.Resource" id="ParentResultMap" extends="BaseResultMap">
@@ -21,7 +24,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, create_datetime, description, icon, name, resource_type, seq, states, url, pid
+      id, create_datetime, description, icon, name, resource_type, seq, states, url, pid,is_leaf,expanded,level
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="ParentResultMap" parameterType="java.lang.Long">
@@ -43,52 +46,17 @@
         where u.login_name = #{_parameter}
     </select>
 
-    <!--<select id="selectUserRoleResouces" resultMap="ParentResultMap" parameterType="map">-->
-    <!--select distinct re.* from-->
-    <!--sys_resource re join sys_role_resource sr on re.id = sr.resource_id-->
-    <!--join sys_role r on r.id = sr.role_id-->
-    <!--join sys_user_role ur on ur.role_id = r.id-->
-    <!--<where>-->
-    <!--<if test="resourceType != null">-->
-    <!--and re.resource_type = #{resourceType}-->
-    <!--</if>-->
-    <!--<if test="userId != null">-->
-    <!--and ur.user_id = #{userId}-->
-    <!--</if>-->
-    <!--</where>-->
-    <!--order by re.seq-->
-    <!--</select>-->
+    <select id="selectAll" resultMap="ParentResultMap" parameterType="java.lang.Long">
+        select distinct t1.*,t2.name as pname
+            from sys_resource t1
+        left OUTER  join sys_resource t2
+            on t1.pid = t2.id
+        where t1.app_id in (0,#{appId})
+    </select>
 
-    <!--<select id="selectUserRoleChildReouces" resultMap="ParentResultMap" parameterType="map">-->
-    <!--with temp ( [id], [pid],name,url,icon)-->
-    <!--as-->
-    <!--(-->
-    <!--select re.id, re.pid,re.name,re.url,re.icon-->
-    <!--from sys_resource re join sys_role_resource rr on re.id = rr.resource_id join sys_role r on r.id = rr.role_id-->
-    <!--join sys_user_role ur on ur.role_id = r.id-->
-    <!--<where>-->
-    <!--<if test="resourceType != null">-->
-    <!--and re.resource_type = #{resourceType}-->
-    <!--</if>-->
-    <!--<if test="userId != null">-->
-    <!--and ur.user_id = #{userId}-->
-    <!--</if>-->
-    <!--<if test="pid != null">-->
-    <!--and re.pid = #{pid}-->
-    <!--</if>-->
-    <!--</where>-->
-    <!--union all-->
-    <!--select a.Id, a.pid,a.name,a.url,a.icon-->
-    <!--from sys_resource a-->
-    <!--inner join temp on a.pid = temp.[Id]-->
-    <!--<where>-->
-    <!--<if test="resourceType != null">-->
-    <!--and a.resource_type = #{resourceType}-->
-    <!--</if>-->
-    <!--</where>-->
-    <!--)-->
-    <!--select DISTINCT * from temp-->
-    <!--</select>-->
+    <select id="selectChilds" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT * FROM sys_resource r WHERE r.pid = #{pid}
+    </select>
     
     <select id="selectRoots" resultMap="BaseResultMap">
         SELECT 
@@ -104,20 +72,21 @@
         JOIN sys_role r ON r.id = rr.role_id
         JOIN sys_user_role ur ON ur.role_id = r.id
         JOIN sys_user u ON u.id = ur.user_id
-        WHERE u.login_name = #{loginName} AND re.pid = #{pid} AND re.resource_type = 0
+        WHERE u.login_name = #{loginName} AND re.pid = #{pid} AND re.resource_type = 1
         ORDER BY re.`seq` ASC
     </select>
 
     <insert id="insert" parameterType="com.basic.core.entity.Resource">
-    insert into sys_resource (create_datetime, description, 
-      icon, name, resource_type,
-      seq, state, url, pid
-      )
-    values (#{createDatetime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, 
-      #{icon,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{resourceType,jdbcType=INTEGER},
-      #{seq,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT}
-      )
-  </insert>
+        insert into sys_resource (create_datetime, description,
+          icon, name, resource_type,
+          seq, state, url, pid,level,is_leaf,expanded
+          )
+        values (#{createDatetime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
+          #{icon,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{resourceType,jdbcType=INTEGER},
+          #{seq,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT}
+          #{leve,jdbcType=INTEGER},#{isLeaf,jdbcType=BOOLEAN},#{expanded,jdbcType=BOOLEAN}
+          )
+    </insert>
 
     <update id="updateByPrimaryKeySelective" parameterType="com.basic.core.entity.Resource">
         update sys_resource

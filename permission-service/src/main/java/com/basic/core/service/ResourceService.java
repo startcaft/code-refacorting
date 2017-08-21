@@ -15,4 +15,7 @@ public interface ResourceService {
 
 	/**获取指定顶层节点和指定用户被授权的二级菜单**/
 	List<ResourceVo> getSecondLevelMenusByRoot(Long rootId, String loginName) throws Exception;
+
+	/*appId,0为共有的资源，加上应用组成in查询*/
+	List<ResourceVo> getAllResource(Long appId) throws Exception;
 }

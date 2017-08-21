@@ -45,6 +45,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
         //字典管理
         registry.addViewController("/admin/dics/manager").setViewName("sys/dic_type_index");
+
+        //系统资源管理
+        registry.addViewController("/admin/res/manager").setViewName("sys/res_index");
     }
 
     /*接受路径参数中的. ，/a/b/c.d*/
