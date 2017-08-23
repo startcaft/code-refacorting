@@ -26,11 +26,11 @@
                     <div class="col-xs-12">
                         <div class="row-fluid" style="margin-bottom: 5px;">
                             <div class="span12 control-group">
-                                <%--<button class="btn btn-success" onclick="setVisible(1)">启用</button>--%>
-                                <%--<button class="btn btn-danger" onclick="setVisible(0)">禁用</button>--%>
-                                <%--<jc:button className="btn btn-primary" id="bnt-add" textName="添加"/>--%>
-                                <%--<jc:button className="btn btn-info" id="bnt-edit" textName="编辑"/>--%>
-                                <%--<jc:button className="btn" id="bnt-grant" textName="授权" permission="/sys/role/list"/>--%>
+                                <button class="btn btn-success" onclick="setVisible(100)">启用</button>
+                                <button class="btn btn-danger" onclick="setVisible(200)">禁用</button>
+                                <button class="btn btn-primary" id="btn-add">添加</button>
+                                <button class="btn btn-info" id="btn-edit">编辑</button>
+                                <button class="btn" id="btn-grant">授权</button>
                             </div>
                         </div>
                         <!-- PAGE CONTENT BEGINS -->
@@ -91,24 +91,30 @@
                         index:"url",
                         sorttype:"string",
                         label:"资源地址",
+                        align:'center',
                         width:90,sortable:false
                     }, {
-                        name: 'resTypeMsg',
+                        name: 'resTypeCode',
                         label: '资源类型',
+                        align:'center',
+                        formatter:fmatterType,
                         width:50,
                         sortable:false
                     }, {
                         name: 'seq',
                         label: '排序号',
+                        align:'center',
                         width:50,
                         sortable:false
                     }, {
                         name:"pid",
                         hidden:true
                     },{
-                        name:"statesMsg",
+                        name:"statesCode",
                         label:'是否启用',
+                        align:'center',
                         width:50,
+                        formatter:fmatterEnabled,
                         sortable:false
                     }
                 ],
@@ -136,19 +142,78 @@
                     icon_field:"icon"
                 },
                 onSelectRow : function( rowid ) {
-                    if(rowid)
-                    {
+                    if(rowid) {
                         selectRowid=rowid;
-                        /**if(rdata.isLeaf === 'true') {
-							$("#price").html(rdata.price);
-							$("#uiicon").empty().append("<span class='ui-icon "+rdata.uiicon+"'></span>");
-						}**/
                     }
                 },
             });
             $("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
             $(window).triggerHandler('resize.jqGrid');
+
+            //添加资源
+            $("#btn-add").click(function(){
+                layer.open({
+                    type: 2,
+                    fix: false,
+                    title: '添加资源',
+                    maxmin: true,
+                    content: '${context}/admin/resources/edit',
+                    area: ['770px', '520px']
+                });
+            });
         });
+
+        //获取选中的行
+        function selectRows() {
+            var rData = $('#grid-table').jqGrid('getRowData',selectRowid);
+            return rData;
+        }
+
+        function setVisible(statesCode){
+            var rData = selectRows();
+            var id = rData.id;
+            if (typeof(id) == 'undefined'){
+                layer.msg('请选择要操作的资源');
+                return;
+            }
+            var submitData = {
+                "id":id,
+                "statesCode":statesCode
+            };
+
+            $.post("${context}/admin/resources/modify", submitData,function(data) {
+                if (data.success) {
+                    layer.msg('操作成功', {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        $("#grid-table").trigger("reloadGrid"); //重新载入
+                    });
+                }else{
+                    layer.msg(data.tipInfo);
+                }
+            },"json");
+        }
+
+        //格式化状态显示
+        function fmatterType(cellvalue, options, rowObject){
+            if(cellvalue==1){
+                return '<span class="label label-sm label-info">系统菜单</span>';
+            }else{
+                return '<span class="label label-sm label-success">功能按钮</span>';
+            }
+        }
+        //格式化状态显示
+        function fmatterEnabled(cellvalue, options, rowObject){
+            if(cellvalue==100){
+                return '<span class="label label-sm label-success">启用</span>';
+            }else{
+                return '<span class="label label-sm label-warning">禁用</span>';
+            }
+        }
+        function reloadGrid(){
+            $("#grid-table").trigger("reloadGrid"); //重新载入
+        }
     </script>
 </body>
 </html>

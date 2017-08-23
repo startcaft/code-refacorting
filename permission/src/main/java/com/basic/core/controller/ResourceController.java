@@ -10,10 +10,9 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Controller
@@ -37,8 +36,8 @@ public class ResourceController {
                 msgJson.setResultData(list);
             }
             catch (Exception e){
+                e.printStackTrace();
                 msgJson.setTipInfo(e.getMessage());
-                msgJson.setSuccess(false);
             }
             return msgJson;
         }
@@ -57,8 +56,8 @@ public class ResourceController {
                 msgJson.setResultData(list);
             }
             catch (Exception e){
+                e.printStackTrace();
                 msgJson.setTipInfo(e.getMessage());
-                msgJson.setSuccess(false);
             }
             return msgJson;
         }
@@ -71,4 +70,52 @@ public class ResourceController {
             return resService.getAllResource(app.getId());
         }
     }
+
+    @RequestMapping(value = "/modify",method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ResponseBody
+    public MsgJson modifyRes(ResourceVo vo){
+        {
+            MsgJson json = new MsgJson();
+            try {
+                resService.updateResource(vo);
+                json.setSuccess(true);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                json.setTipInfo(e.getMessage());
+            }
+            return json;
+        }
+    }
+
+    @RequestMapping(value = "/save",method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ResponseBody
+    public MsgJson add(ResourceVo vo){
+        {
+            MsgJson json = new MsgJson();
+            try {
+                vo.setAppId(app.getId());
+                resService.saveResource(vo);
+                json.setSuccess(true);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                json.setTipInfo(e.getMessage());
+            }
+            return json;
+        }
+    }
+
+    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    public String editRes(@RequestParam(value="id",required = false) Long resId,
+                          Model model) throws Exception{
+        {
+            if (resId == null){
+                //编辑
+            }
+            return "sys/res_add";
+        }
+    }
+
+
 }

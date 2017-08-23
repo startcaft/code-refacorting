@@ -13,6 +13,7 @@
         <result column="states" property="states" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
         <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="app_id" property="appId" jdbcType="BIGINT"/>
         <result column="level" property="level" jdbcType="INTEGER"/>
         <result column="is_leaf" property="isLeaf" jdbcType="BOOLEAN"/>
         <result column="expanded" property="expanded" jdbcType="BOOLEAN"/>
@@ -24,7 +25,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, create_datetime, description, icon, name, resource_type, seq, states, url, pid,is_leaf,expanded,level
+      id, create_datetime, description, icon, name, resource_type, seq, states, url, pid, app_id, is_leaf, expanded, level
     </sql>
 
     <select id="selectByPrimaryKey" resultMap="ParentResultMap" parameterType="java.lang.Long">
@@ -54,10 +55,6 @@
         where t1.app_id in (0,#{appId})
     </select>
 
-    <select id="selectChilds" resultMap="BaseResultMap" parameterType="java.lang.Long">
-        SELECT * FROM sys_resource r WHERE r.pid = #{pid}
-    </select>
-    
     <select id="selectRoots" resultMap="BaseResultMap">
         SELECT 
         <include refid="Base_Column_List"/>
@@ -79,12 +76,13 @@
     <insert id="insert" parameterType="com.basic.core.entity.Resource">
         insert into sys_resource (create_datetime, description,
           icon, name, resource_type,
-          seq, state, url, pid,level,is_leaf,expanded
+          seq, states, url, pid,
+          app_id,level, is_leaf, expanded
           )
         values (#{createDatetime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR},
           #{icon,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{resourceType,jdbcType=INTEGER},
-          #{seq,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT}
-          #{leve,jdbcType=INTEGER},#{isLeaf,jdbcType=BOOLEAN},#{expanded,jdbcType=BOOLEAN}
+          #{seq,jdbcType=INTEGER}, #{states,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{pid,jdbcType=BIGINT},
+          #{appId,jdbcType=BIGINT}, #{level,jdbcType=INTEGER}, #{isLeaf,jdbcType=BOOLEAN}, #{expanded,jdbcType=BOOLEAN}
           )
     </insert>
 
@@ -109,8 +107,8 @@
             <if test="seq != null">
                 seq = #{seq,jdbcType=INTEGER},
             </if>
-            <if test="state != null">
-                state = #{state,jdbcType=INTEGER},
+            <if test="states != null">
+                states = #{states,jdbcType=INTEGER},
             </if>
             <if test="url != null">
                 url = #{url,jdbcType=VARCHAR},

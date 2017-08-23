@@ -122,6 +122,7 @@
                     }, 0);
                 }
             });
+            $("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
             $(window).triggerHandler('resize.jqGrid');
         });
 

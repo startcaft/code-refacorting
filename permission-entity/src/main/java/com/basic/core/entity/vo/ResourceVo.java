@@ -18,11 +18,16 @@ public class ResourceVo extends BaseVo {
     private String statesMsg;
     private String url;
     private Long pid;
+    private Long appId;
 
-    private String pname;       //父资源节点名称
+
     private Integer level;       //层级
     private boolean isLeaf;     //是否叶节点
     private boolean expanded;    //是否展开
+
+    private boolean isRoot;     //是否顶级，只能是菜单
+    private String pname;       //父资源节点名称
+    private boolean isPublic;   //是否公共资源
 
     public Date getCreateDatetime() {
         return createDatetime;
@@ -142,5 +147,33 @@ public class ResourceVo extends BaseVo {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public boolean isRoot() {
+        return isRoot;
+    }
+
+    public void setRoot(boolean root) {
+        isRoot = root;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
 }

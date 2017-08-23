@@ -119,12 +119,10 @@
                     setTimeout(function(){
                         updatePagerIcons(table);
                     }, 0);
-                    //height:'auto' IE下的水平滚动条bug
-                    $(grid_selector).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'scroll' });
                 }
             });
+            $("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
             $(window).triggerHandler('resize.jqGrid');
-
         });
 
         $("#btn_search").click(function(){//查询

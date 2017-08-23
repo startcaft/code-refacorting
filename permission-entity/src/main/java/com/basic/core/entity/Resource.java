@@ -19,6 +19,7 @@ public class Resource extends BaseEntity {
     private States states;
     private String url;
     private Long pid;
+    private Long appId;
     private Integer level;
     private boolean isLeaf;
     private boolean expanded;
@@ -136,5 +137,13 @@ public class Resource extends BaseEntity {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
+    }
+
+    public Long getAppId() {
+        return appId;
+    }
+
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
 }

@@ -18,4 +18,10 @@ public interface ResourceService {
 
 	/*appId,0为共有的资源，加上应用组成in查询*/
 	List<ResourceVo> getAllResource(Long appId) throws Exception;
+
+	/*修改*/
+	void updateResource(ResourceVo vo) throws Exception;
+
+	/*保存*/
+	void saveResource(ResourceVo vo) throws Exception;
 }

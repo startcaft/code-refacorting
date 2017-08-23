@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -80,6 +81,61 @@ public class ResourceServiceImpl implements ResourceService {
                 voList.add(this.cycleCopyProperties(entity));
             });
             return voList;
+        }
+    }
+
+    @Transactional(value="masterTransactionManager")
+    @Override
+    public void updateResource(ResourceVo vo) throws Exception {
+        {
+            if (vo.getId() == null){
+                throw new Exception("无法更新数据，因为没有提供必要的主键ID");
+            }
+            Resource entity = new Resource();
+            BeanUtils.copyProperties(vo,entity);
+            States states = States.getStates(vo.getStatesCode());
+            entity.setStates(states);
+            resDao.updateByPrimaryKeySelective(entity);
+        }
+    }
+
+    @Transactional(value="masterTransactionManager")
+    @Override
+    public void saveResource(ResourceVo vo) throws Exception {
+        {
+            if (vo == null){
+                throw new Exception("无法保存数据，因为没有提供足够的信息");
+            }
+            Resource entity = new Resource();
+            BeanUtils.copyProperties(vo,entity);
+            entity.setCreateDatetime(new Date());
+            ResourceType type = ResourceType.getResourceType(vo.getResTypeCode());
+            entity.setStates(States.NORMAL);
+            entity.setResourceType(type);
+            //顶级节点，无url，expanded为true，level为1，isLeaf为false
+            if (vo.isRoot()){
+                entity.setExpanded(true);
+                entity.setLevel(1);
+                entity.setLeaf(false);
+            }
+            else {
+                if (type == ResourceType.MENU){//二级菜单
+                    entity.setExpanded(true);
+                    entity.setLevel(2);
+                    entity.setLeaf(false);
+                }
+                else if (type == ResourceType.FUNC){//三级功能
+                    entity.setLeaf(true);
+                    entity.setExpanded(false);
+                    entity.setLevel(3);
+                }
+            }
+            //是否公共资源,公共资源appId为0
+            if (vo.isPublic()){
+                vo.setAppId(new Long(0));
+            }
+
+            resDao.insert(entity);
         }
     }
 
