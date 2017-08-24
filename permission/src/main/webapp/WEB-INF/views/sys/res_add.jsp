@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="context" value="${pageContext.request.contextPath}"/>
 <html>
 <head>
@@ -26,7 +25,7 @@
                             <!-- PAGE CONTENT BEGINS -->
                             <form class="form-horizontal" id="validation-form" method="post">
                                 <div class="form-group">
-                                    <input name="id" type="hidden" value="${res.id}"/>
+                                    <input name="id" id="resId" type="hidden" value="${res.id}"/>
                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="pname">上级资源</label>
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="input-icon input-icon-right" id="parentRes">
@@ -51,7 +50,7 @@
                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="url">资源路径</label>
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="clearfix">
-                                            <input type="text" name="url" id="url" value="${sysRes.url}" class="col-xs-12 col-sm-6">
+                                            <input type="text" name="url" id="url" value="${res.url}" class="col-xs-12 col-sm-6">
                                         </div>
                                     </div>
                                 </div>
@@ -83,19 +82,21 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right checkbox-inline" for="isRoot">是否一级菜单</label>
+                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right checkbox-inline" for="root">是否一级菜单</label>
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="clearfix">
-                                            <input name="isRoot" id="isRoot" class="ace ace-switch" type="checkbox" />
+                                            <input name="root" id="root" class="ace ace-switch" type="checkbox"
+                                                ${res.root eq true?'checked':''} />
                                             <span class="lbl"></span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right checkbox-inline" for="isPublic">是否公共资源</label>
+                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right checkbox-inline" for="shared">是否公共资源</label>
                                     <div class="col-xs-12 col-sm-9">
                                         <div class="clearfix">
-                                            <input name="isPublic" id="isPublic" class="ace ace-switch" type="checkbox" />
+                                            <input name="shared" id="shared" class="ace ace-switch" type="checkbox"
+                                                ${res.shared eq true?'checked':''}/>
                                             <span class="lbl"></span>
                                         </div>
                                     </div>
@@ -129,7 +130,7 @@
             initformSubmitEvent();
             initResTree();
 
-            $('#isRoot').change(function () {
+            $('#root').change(function () {
                 if ($(this).is(':checked')){
                     //一级菜单不需要上级资源和url
                     $('#pid').attr("disabled",true);
@@ -145,8 +146,20 @@
                     $('#url').removeAttr("disabled");
                     $('#menuBtn').removeAttr("disabled");
                 }
-            })
+            });
+
+            disabledEditRoot();//禁用修改是否一级菜单
         });
+
+        function disabledEditRoot(){
+            var id = $("#resId").val();
+            if(id){
+                $('#root').attr('disabled',true)
+            }
+            else {
+                $('#root').removeAttr("disabled");
+            }
+        }
 
         //zTree的设置
         var setting = {

@@ -26,11 +26,18 @@
                     <div class="col-xs-12">
                         <div class="row-fluid" style="margin-bottom: 5px;">
                             <div class="span12 control-group">
-                                <button class="btn btn-success" onclick="setVisible(100)">启用</button>
-                                <button class="btn btn-danger" onclick="setVisible(200)">禁用</button>
-                                <button class="btn btn-primary" id="btn-add">添加</button>
-                                <button class="btn btn-info" id="btn-edit">编辑</button>
-                                <button class="btn" id="btn-grant">授权</button>
+                                <shiro:hasPermission name="/admin/res/enable">
+                                    <button class="btn btn-success" onclick="setVisible(100)">启用</button>
+                                </shiro:hasPermission>
+                                <shiro:hasPermission name="/admin/res/disable">
+                                    <button class="btn btn-danger" onclick="setVisible(200)">禁用</button>
+                                </shiro:hasPermission>
+                                <shiro:hasPermission name="/admin/res/add">
+                                    <button class="btn btn-primary" id="btn-add">添加</button>
+                                </shiro:hasPermission>
+                                <shiro:hasPermission name="/admin/res/edit">
+                                    <button class="btn btn-info" id="btn-edit">编辑</button>
+                                </shiro:hasPermission>
                             </div>
                         </div>
                         <!-- PAGE CONTENT BEGINS -->
@@ -116,6 +123,13 @@
                         width:50,
                         formatter:fmatterEnabled,
                         sortable:false
+                    },{
+                        name:"shared",
+                        label:'是否公用',
+                        align:'center',
+                        width:50,
+                        formatter:fmatterShared,
+                        sortable:false
                     }
                 ],
                 height: 'auto',
@@ -158,6 +172,24 @@
                     title: '添加资源',
                     maxmin: true,
                     content: '${context}/admin/resources/edit',
+                    area: ['770px', '520px']
+                });
+            });
+
+            //编辑资源
+            $("#btn-edit").click(function(){
+                var rdata=selectRows();
+                var id=rdata.id;
+                if (typeof(id) == "undefined") {
+                    layer.msg("请选择要编辑的资源");
+                    return;
+                }
+                layer.open({
+                    type: 2,
+                    fix: false,
+                    title: '编辑资源',
+                    maxmin: true,
+                    content: '${context}/admin/resources/edit?id='+id,
                     area: ['770px', '520px']
                 });
             });
@@ -209,6 +241,14 @@
                 return '<span class="label label-sm label-success">启用</span>';
             }else{
                 return '<span class="label label-sm label-warning">禁用</span>';
+            }
+        }
+        //格式化是否共有资源
+        function fmatterShared(cellvalue, options, rowObject) {
+            if(cellvalue){
+                return '<span class="label label-sm label-success">公共资源</span>';
+            }else{
+                return '<span class="label label-sm label-warning">独有资源</span>';
             }
         }
         function reloadGrid(){

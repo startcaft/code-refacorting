@@ -21,4 +21,6 @@ public interface ResourceDao {
     List<Resource> selectAll(Long appId);
 
     int updateByPrimaryKeySelective(Resource record);
+
+    List<Resource> selectByRoleId(Long id);
 }

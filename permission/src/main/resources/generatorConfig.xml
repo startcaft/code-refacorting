@@ -23,7 +23,7 @@
 				password="${jdbc.password}" />
 
 		<!-- model生成的位置 -->
-		<javaModelGenerator targetPackage="com.basic.core.entity"
+		<javaModelGenerator targetPackage="../permission-entity/com.basic.core.entity"
 			targetProject="src/main/java">
 			<!-- enableSubPackages 是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
@@ -32,14 +32,14 @@
 		</javaModelGenerator>
 
 		<!-- mapper映射文件生成的位置 -->
-		<sqlMapGenerator targetPackage="com.basic.core.dao.master"
+		<sqlMapGenerator targetPackage="../permission-dao/com.basic.core.dao.master"
 			targetProject="src/main/java">
 			<!-- enableSubPackages 是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 		</sqlMapGenerator>
 
 		<!-- Mapper接口生成的位置 -->
-		<javaClientGenerator targetPackage="com.basic.core.dao.master"
+		<javaClientGenerator targetPackage="../permission-dao/com.basic.core.dao.master"
 			targetProject="src/main/java" type="XMLMAPPER">
 			<!-- enableSubPackages 是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
@@ -47,7 +47,7 @@
 		
 		<!-- 指定数据库表 -->
 		<!-- 如果表没有主键，则只会生成insert语句，因为select/update语句都需要根据主键来 -->		
-		<table tableName="sys_dic_item" domainObjectName="DicItem"
+		<table tableName="sys_role" domainObjectName="Role"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

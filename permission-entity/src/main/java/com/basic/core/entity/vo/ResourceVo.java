@@ -27,7 +27,9 @@ public class ResourceVo extends BaseVo {
 
     private boolean isRoot;     //是否顶级，只能是菜单
     private String pname;       //父资源节点名称
-    private boolean isPublic;   //是否公共资源
+    private boolean isShared;   //是否公共资源
+
+    private boolean checked;    //是否选中
 
     public Date getCreateDatetime() {
         return createDatetime;
@@ -161,12 +163,12 @@ public class ResourceVo extends BaseVo {
         isRoot = root;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public boolean isShared() {
+        return isShared;
     }
 
-    public void setPublic(boolean aPublic) {
-        isPublic = aPublic;
+    public void setShared(boolean shared) {
+        isShared = shared;
     }
 
     public Long getAppId() {
@@ -175,5 +177,13 @@ public class ResourceVo extends BaseVo {
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 }

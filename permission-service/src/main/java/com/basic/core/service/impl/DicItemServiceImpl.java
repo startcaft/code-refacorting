@@ -1,6 +1,6 @@
 package com.basic.core.service.impl;
 
-import com.basic.core.dao.master.DicItemMapper;
+import com.basic.core.dao.master.DicItemDao;
 import com.basic.core.entity.DicItem;
 import com.basic.core.entity.query.Condition;
 import com.basic.core.entity.query.DicItemQuery;
@@ -24,7 +24,7 @@ import java.util.Map;
 public class DicItemServiceImpl implements DicItemService {
 
     @Autowired
-    private DicItemMapper itemDao;
+    private DicItemDao itemDao;
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override

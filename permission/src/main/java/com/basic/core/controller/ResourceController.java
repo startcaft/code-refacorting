@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Controller
@@ -71,6 +70,27 @@ public class ResourceController {
         }
     }
 
+    @RequestMapping(value = "/roleAll",method = RequestMethod.GET,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @ResponseBody
+    public List<ResourceVo> getAllRoleRes(@RequestParam(value = "roleId") Long id) throws Exception {
+        {
+            //获取指定角色的系统资源（每个APP都有不同的角色数据）
+            List<ResourceVo> roles = resService.getResourcesByRole(id);
+            //获取所有的系统资源（包含公共资源和指定appId的资源）
+            List<ResourceVo> alls = resService.getAllResource(app.getId());
+            alls.forEach((v) -> {
+                for(ResourceVo vo : roles){
+                    if(v.getId().equals(vo.getId())){
+                        v.setChecked(true);
+                        break;
+                    }
+                }
+            });
+
+            return alls;
+        }
+    }
+
     @RequestMapping(value = "/modify",method = RequestMethod.POST,produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @ResponseBody
     public MsgJson modifyRes(ResourceVo vo){
@@ -93,14 +113,27 @@ public class ResourceController {
     public MsgJson add(ResourceVo vo){
         {
             MsgJson json = new MsgJson();
-            try {
-                vo.setAppId(app.getId());
-                resService.saveResource(vo);
-                json.setSuccess(true);
+            if (vo.getId() != null){
+                //修改
+                try {
+                    resService.updateResource(vo);
+                    json.setSuccess(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    json.setTipInfo(e.getMessage());
+                }
             }
-            catch (Exception e){
-                e.printStackTrace();
-                json.setTipInfo(e.getMessage());
+            else {
+                try {
+                    vo.setAppId(app.getId());
+                    resService.saveResource(vo);
+                    json.setSuccess(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    json.setTipInfo(e.getMessage());
+                }
             }
             return json;
         }
@@ -110,8 +143,10 @@ public class ResourceController {
     public String editRes(@RequestParam(value="id",required = false) Long resId,
                           Model model) throws Exception{
         {
-            if (resId == null){
+            if (resId != null){
                 //编辑
+                ResourceVo vo = resService.getSingle(resId);
+                model.addAttribute("res",vo);
             }
             return "sys/res_add";
         }

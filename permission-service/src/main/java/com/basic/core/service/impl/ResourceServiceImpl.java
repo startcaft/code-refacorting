@@ -44,6 +44,20 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Transactional(value="masterTransactionManager",readOnly = true)
     @Override
+    public List<ResourceVo> getResourcesByRole(Long roleId) throws Exception {
+        {
+            List<Resource> resourceList = resDao.selectByRoleId(roleId);
+            List<ResourceVo> voList = new ArrayList<>();
+
+            resourceList.forEach((r) -> {
+                voList.add(this.cycleCopyProperties(r));
+            });
+            return voList;
+        }
+    }
+
+    @Transactional(value="masterTransactionManager",readOnly = true)
+    @Override
     public List<ResourceVo> getRootLevelMenus() throws Exception {
         {
             List<Resource> list = resDao.selectRoots();
@@ -93,8 +107,17 @@ public class ResourceServiceImpl implements ResourceService {
             }
             Resource entity = new Resource();
             BeanUtils.copyProperties(vo,entity);
-            States states = States.getStates(vo.getStatesCode());
-            entity.setStates(states);
+            if (vo.getStatesCode() != null){
+                States states = States.getStates(vo.getStatesCode());
+                entity.setStates(states);
+            }
+            if (vo.getResTypeCode() != null){
+                ResourceType type = ResourceType.getResourceType(vo.getResTypeCode());
+                entity.setResourceType(type);
+            }
+            if (vo.isShared()){
+                entity.setAppId(new Long(0));
+            }
             resDao.updateByPrimaryKeySelective(entity);
         }
     }
@@ -131,11 +154,23 @@ public class ResourceServiceImpl implements ResourceService {
                 }
             }
             //是否公共资源,公共资源appId为0
-            if (vo.isPublic()){
-                vo.setAppId(new Long(0));
+            if (vo.isShared()){
+                entity.setAppId(new Long(0));
             }
 
             resDao.insert(entity);
+        }
+    }
+
+    @Transactional(value="masterTransactionManager",readOnly = true)
+    @Override
+    public ResourceVo getSingle(Long id) throws Exception {
+        {
+            if (id == null){
+                throw new Exception("没有指定的主键ID");
+            }
+            Resource entity = resDao.selectByPrimaryKey(id);
+            return this.cycleCopyProperties(entity);
         }
     }
 
@@ -157,6 +192,14 @@ public class ResourceServiceImpl implements ResourceService {
                 if (entity.getResource() != null){
                     vo.setPid(entity.getResource().getId());
                     vo.setPname(entity.getResource().getName());
+                }
+
+                if (entity.getAppId() == 0){//是否公共
+                    vo.setShared(true);
+                }
+
+                if (entity.getLevel() == 1 && StringUtils.isEmpty(entity.getUrl())){//是否顶级节点
+                    vo.setRoot(true);
                 }
             }
             return vo;

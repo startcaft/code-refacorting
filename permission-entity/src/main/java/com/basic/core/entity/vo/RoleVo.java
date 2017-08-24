@@ -1,6 +1,9 @@
-package com.basic.core.entity;
+package com.basic.core.entity.vo;
 
-public class Role extends BaseEntity {
+/**
+ * Created by startcaft on 2017/8/24.
+ */
+public class RoleVo extends BaseVo {
 
     private String description;
 
@@ -10,12 +13,14 @@ public class Role extends BaseEntity {
 
     private Long appId;
 
+    private String resIds;
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
-        this.description = description == null ? null : description.trim();
+        this.description = description;
     }
 
     public String getName() {
@@ -23,7 +28,7 @@ public class Role extends BaseEntity {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public Integer getSeq() {
@@ -40,5 +45,13 @@ public class Role extends BaseEntity {
 
     public void setAppId(Long appId) {
         this.appId = appId;
+    }
+
+    public String getResIds() {
+        return resIds;
+    }
+
+    public void setResIds(String resIds) {
+        this.resIds = resIds;
     }
 }

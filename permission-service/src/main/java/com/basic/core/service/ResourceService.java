@@ -10,6 +10,9 @@ public interface ResourceService {
 	/**获取登录用户的被授权的所有系统资源**/
 	List<ResourceVo> getUserRoleResrouces(String loginName) throws Exception;
 
+	/**获取角色ID的被授权的所有系统资源**/
+	List<ResourceVo> getResourcesByRole(Long roleId) throws Exception;
+
 	/**获取第一级的菜单，是不需要被授权的**/
 	List<ResourceVo> getRootLevelMenus() throws Exception;
 
@@ -24,4 +27,7 @@ public interface ResourceService {
 
 	/*保存*/
 	void saveResource(ResourceVo vo) throws Exception;
+
+	/*详细*/
+	ResourceVo getSingle(Long id) throws Exception;
 }

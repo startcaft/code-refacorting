@@ -40,6 +40,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     /*配置快捷的ViewController，只是页面跳转的Controller*/
     public void addViewControllers(ViewControllerRegistry registry) {
+
         //修改登录密码页面
         registry.addViewController("/admin/pwdSettings").setViewName("sys/pwdSettings");
 
@@ -48,6 +49,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
         //系统资源管理
         registry.addViewController("/admin/res/manager").setViewName("sys/res_index");
+
+        //角色管理
+        registry.addViewController("/admin/role/manager").setViewName("sys/role_index");
     }
 
     /*接受路径参数中的. ，/a/b/c.d*/

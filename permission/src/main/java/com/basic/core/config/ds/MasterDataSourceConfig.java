@@ -1,8 +1,12 @@
 package com.basic.core.config.ds;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.shiro.session.Session;
 import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,5 +132,12 @@ public class MasterDataSourceConfig {
         sessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver()
                 .getResources(MasterDataSourceConfig.MAPPER_LOCATION));
         return sessionFactory.getObject();
+    }
+
+    //执行批量操作的SqlSession
+    @Bean(name = "batchSession")
+    public SqlSession sqlSession(@Qualifier("masterSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
+        SqlSession sqlSession = new SqlSessionTemplate(sqlSessionFactory, ExecutorType.BATCH);
+        return sqlSession;
     }
 }

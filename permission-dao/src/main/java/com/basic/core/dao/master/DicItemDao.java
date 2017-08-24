@@ -5,7 +5,7 @@ import com.basic.core.entity.DicItem;
 import java.util.List;
 import java.util.Map;
 
-public interface DicItemMapper {
+public interface DicItemDao {
 
     int deleteByPrimaryKey(Long id);
 

@@ -47,6 +47,17 @@
         where u.login_name = #{_parameter}
     </select>
 
+    <!--根据角色id获取关联权限下的所有系统资源-->
+    <select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT DISTINCT  re.* FROM
+        sys_resource re
+        JOIN sys_role_resource rr ON re.id = rr.resource_id
+        JOIN sys_role r ON r.id = rr.role_id
+        JOIN sys_user_role ur ON ur.role_id = r.id
+        JOIN sys_user u ON u.id = ur.user_id
+        WHERE ur.role_id = 1
+    </select>
+
     <select id="selectAll" resultMap="ParentResultMap" parameterType="java.lang.Long">
         select distinct t1.*,t2.name as pname
             from sys_resource t1
@@ -115,6 +126,9 @@
             </if>
             <if test="pid != null">
                 pid = #{pid,jdbcType=BIGINT},
+            </if>
+            <if test="appId != null">
+                app_id = #{appId,jdbcType=BIGINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
