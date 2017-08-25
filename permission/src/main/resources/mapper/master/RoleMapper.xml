@@ -6,12 +6,11 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="seq" jdbcType="INTEGER" property="seq"/>
         <result column="app_id" property="appId" jdbcType="BIGINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-      id, description, name, seq, app_id
+      id, description, name, app_id
     </sql>
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -34,20 +33,24 @@
     </select>
 
     <insert id="insert" parameterType="com.basic.core.entity.Role">
-        insert into sys_role (id, description, name,
-        seq)
-        values (#{id,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-        #{seq,jdbcType=INTEGER})
+        insert into sys_role (description, name,
+        app_id)
+        values (#{description,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{appId,jdbcType=BIGINT})
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.basic.core.entity.Role">
+    <update id="updateByPrimaryKeySelective" parameterType="com.basic.core.entity.Role" >
         update sys_role
-        set description = #{description,jdbcType=VARCHAR},
-        name = #{name,jdbcType=VARCHAR},
-        seq = #{seq,jdbcType=INTEGER}
+        <set >
+            <if test="description != null" >
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null" >
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+        </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-
 
     <!--中间表的操作-->
     <delete id="deleteRoleRes" parameterType="java.lang.Long" >

@@ -1,15 +1,10 @@
 package com.basic.core.entity.vo;
 
-/**
- * Created by startcaft on 2017/8/24.
- */
 public class RoleVo extends BaseVo {
 
     private String description;
 
     private String name;
-
-    private Integer seq;
 
     private Long appId;
 
@@ -29,14 +24,6 @@ public class RoleVo extends BaseVo {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
     }
 
     public Long getAppId() {

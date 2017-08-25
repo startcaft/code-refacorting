@@ -24,12 +24,58 @@ public class RoleController {
     @Autowired
     private App app;
 
+    /** grant view **/
     @RequestMapping(value = "/grant",method = RequestMethod.GET)
     public String grantView(@RequestParam(value = "roleId",required = true) Long id,
                             Model model) throws Exception {
         {
             model.addAttribute("roleId",id);
             return "sys/res_grant";
+        }
+    }
+
+    /** add/edit view **/
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    public String editView(@RequestParam(value = "roleId",required = false) Long id,
+                           Model model) throws Exception {
+        {
+            if (id != null){
+                RoleVo role = roleService.getSingle(id);
+                model.addAttribute("role",role);
+            }
+            return "sys/role_add";
+        }
+    }
+
+    @RequestMapping(value = "/save",method = RequestMethod.POST)
+    @ResponseBody
+    public MsgJson saverOrUpdate(RoleVo vo){
+        {
+            MsgJson json = new MsgJson();
+            if (vo.getId() == null){
+                //添加
+                try {
+                    vo.setAppId(app.getId());
+                    roleService.save(vo);
+                    json.setSuccess(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    json.setTipInfo(e.getMessage());
+                }
+            }
+            else {
+                //修改
+                try {
+                    roleService.update(vo);
+                    json.setSuccess(true);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                    json.setTipInfo(e.getMessage());
+                }
+            }
+            return json;
         }
     }
 

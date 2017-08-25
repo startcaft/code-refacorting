@@ -6,8 +6,6 @@ public class Role extends BaseEntity {
 
     private String name;
 
-    private Integer seq;
-
     private Long appId;
 
     public String getDescription() {
@@ -24,14 +22,6 @@ public class Role extends BaseEntity {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
-    }
-
-    public Integer getSeq() {
-        return seq;
-    }
-
-    public void setSeq(Integer seq) {
-        this.seq = seq;
     }
 
     public Long getAppId() {

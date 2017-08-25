@@ -51,12 +51,13 @@
                     <div class="col-xs-12">
                         <div class="row-fluid" style="margin-bottom: 5px;">
                             <div class="span12 control-group">
-                                <%--<jc:button className="btn btn-success" id="btn-visible" textName="启用"/>--%>
-                                <%--<jc:button className="btn btn-danger" id="btn-unvisible" textName="禁用"/>--%>
-                                <%--<jc:button className="btn btn-primary" id="btn-add" textName="添加"/>--%>
-                                <%--<jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>--%>
-                                <%--<jc:button className="btn" id="bnt-grant" textName="资源授权" permission="/sys/role"/>--%>
-                                <shiro:hasPermission name="/admin/res/grant">
+                                <shiro:hasPermission name="/admin/role/add">
+                                    <button class="btn btn-primary" id="btn-add">添加</button>
+                                </shiro:hasPermission>
+                                <shiro:hasPermission name="/admin/role/edit">
+                                    <button class="btn btn-info" id="btn-edit">编辑</button>
+                                </shiro:hasPermission>
+                                <shiro:hasPermission name="/admin/role/grant">
                                     <button class="btn" id="btn-grant">授权</button>
                                 </shiro:hasPermission>
                             </div>
@@ -100,8 +101,7 @@
                 colModel: [
                     { label: '角色ID', name: 'id', key: true, hidden:true },
                     { label: '角色名称', name: 'name', width: 150, align: 'center' },
-                    { label: '描述', name: 'description', width: 150 ,sortable:false, align: 'center'},
-                    { label: '排序', name: 'seq', width: 50 ,sortable:false, align: 'center'},
+                    { label: '描述', name: 'description', width: 150 ,sortable:false, align: 'center'}
                 ],
                 viewrecords: true,
                 height: 'auto',
@@ -127,7 +127,17 @@
             $("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
             $(window).triggerHandler('resize.jqGrid');
 
-
+            //添加
+            $("#btn-add").click(function(){
+                layer.open({
+                    title:'添加角色',
+                    type: 2,
+                    area: ['370px', '430px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${context}/admin/roles/add'
+                });
+            });
             //查询
             $("#btn_search").click(function(){
                 //此处可以添加对查询数据的合法验证
@@ -154,6 +164,23 @@
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context}/admin/roles/grant?roleId='+id
+                });
+            });
+            //编辑
+            $("#btn-edit").click(function(){
+                var rData = selectRows();
+                var id = rData.id;
+                if (typeof(id) == 'undefined'){
+                    layer.msg('请选择要操作的资源');
+                    return;
+                }
+                layer.open({
+                    title:'修改角色',
+                    type: 2,
+                    area: ['370px', '430px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${context}/admin/roles/add?roleId='+id
                 });
             });
         })

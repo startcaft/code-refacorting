@@ -10,9 +10,9 @@ public interface RoleDao {
 
     int insert(Role record);
 
-    Role selectByPrimaryKey(Long id);
-
     int updateByPrimaryKeySelective(Role record);
+
+    Role selectByPrimaryKey(Long id);
 
     List<Role> selectListDynamic(Map<String,Object> param);
 

@@ -70,7 +70,8 @@ public class RoleServiceImpl implements RoleService {
             }
 
             //第一步，批量删除该角色原本的关联资源
-            roleDao.deleteRoleRes(vo.getId());
+            //roleDao.deleteRoleRes(vo.getId());
+            session.getMapper(RoleDao.class).deleteRoleRes(vo.getId());
             //第二部，批量添加传递进来的资源id数组
             if (!StringUtils.isEmpty(vo.getResIds())){
                 String[] ids = vo.getResIds().split(",");
@@ -79,6 +80,55 @@ public class RoleServiceImpl implements RoleService {
                     session.getMapper(RoleDao.class).insertRoleRes(vo.getId(),new Long(ids[i]));
                 }
             }
+        }
+    }
+
+    @Transactional(value="masterTransactionManager")
+    @Override
+    public void save(RoleVo vo) throws Exception {
+        {
+            if (vo == null){
+                throw new Exception("无法保存角色，缺少必要的数据");
+            }
+            if (StringUtils.isEmpty(vo.getName())){
+                throw new Exception("角色名称必须指定");
+            }
+            //先确保role.name不存在
+            Map<String,Object> queryParams = new HashMap<>();
+            queryParams.put("roleName",vo.getName());
+            List<Role> querys = roleDao.selectListDynamic(queryParams);
+            if (querys != null && querys.size() > 0){
+                throw new Exception("指定的角色名称已经存在，请更换一个再执行保存");
+            }
+            //再保存
+            Role entity = new Role();
+            BeanUtils.copyProperties(vo,entity);
+            roleDao.insert(entity);
+        }
+    }
+
+    @Transactional(value="masterTransactionManager")
+    @Override
+    public void update(RoleVo vo) throws Exception {
+        {
+            if (vo == null){
+                throw new Exception("无法保存角色，缺少必要的数据");
+            }
+            Role entity = new Role();
+            BeanUtils.copyProperties(vo,entity);
+            roleDao.updateByPrimaryKeySelective(entity);
+        }
+    }
+
+    @Transactional(value="masterTransactionManager",readOnly = true)
+    @Override
+    public RoleVo getSingle(Long id) throws Exception {
+        {
+            if (id == null){
+                throw new Exception("缺少指定的主键ID");
+            }
+            Role entity = roleDao.selectByPrimaryKey(id);
+            return this.cycleCopyProperties(entity);
         }
     }
 
